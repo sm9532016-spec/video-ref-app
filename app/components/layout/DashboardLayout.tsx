@@ -12,8 +12,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="min-h-screen bg-dark-bg overflow-x-hidden">
                 <Sidebar />
                 <Header />
-                <main className="lg:ml-64 pt-16 min-h-screen pb-20 lg:pb-0">
-                    <div className="p-4 lg:p-6">
+                <main className="xl:ml-64 pt-16 min-h-screen pb-20 xl:pb-0">
+                    <div className="p-4 xl:p-6">
                         {children}
                     </div>
                 </main>

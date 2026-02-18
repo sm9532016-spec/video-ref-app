@@ -81,12 +81,12 @@ function DateFolder({
       {/* Folder Header */}
       <button
         onClick={() => setIsOpen(o => !o)}
-        className="w-full flex flex-col lg:flex-row items-start lg:items-center justify-between px-4 lg:px-5 py-4 hover:bg-white/5 transition-colors rounded-xl gap-3 lg:gap-0"
+        className="w-full flex flex-col xl:flex-row items-start xl:items-center justify-between px-4 xl:px-5 py-4 hover:bg-white/5 transition-colors rounded-xl gap-3 xl:gap-0"
       >
-        <div className="flex items-center gap-3 w-full lg:w-auto">
+        <div className="flex items-center gap-3 w-full xl:w-auto">
           {/* Folder icon */}
           <span className="text-2xl">{isOpen ? '📂' : '📁'}</span>
-          <div className="text-left flex-1 lg:flex-none">
+          <div className="text-left flex-1 xl:flex-none">
             <div className="flex items-center gap-2">
               <span className={`font-bold text-lg ${isToday ? 'text-accent-primary' : 'text-dark-text'}`}>
                 {formatDateLabel(dateKey)}
@@ -102,12 +102,12 @@ function DateFolder({
             )}
           </div>
           {/* Chevron (Mobile: Right aligned) */}
-          <span className={`text-dark-text-muted transition-transform duration-300 lg:hidden ml-auto ${isOpen ? 'rotate-180' : ''}`}>
+          <span className={`text-dark-text-muted transition-transform duration-300 xl:hidden ml-auto ${isOpen ? 'rotate-180' : ''}`}>
             ▼
           </span>
         </div>
 
-        <div className="flex items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
+        <div className="flex items-center gap-3 w-full xl:w-auto justify-between xl:justify-end">
           {/* Stats badges */}
           <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="px-2.5 py-1 bg-dark-surface-light rounded-lg text-dark-text-muted">
@@ -125,7 +125,7 @@ function DateFolder({
             )}
           </div>
           {/* Chevron (Desktop) */}
-          <span className={`text-dark-text-muted transition-transform duration-300 hidden lg:block ${isOpen ? 'rotate-180' : ''}`}>
+          <span className={`text-dark-text-muted transition-transform duration-300 hidden xl:block ${isOpen ? 'rotate-180' : ''}`}>
             ▼
           </span>
         </div>
@@ -154,7 +154,7 @@ function DateFolder({
             </div>
           )}
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {videos.map(video => (
               <VideoCard
                 key={video.id}
