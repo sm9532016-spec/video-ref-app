@@ -57,8 +57,8 @@ export default function Sidebar() {
 
     return (
         <>
-            {/* Desktop Sidebar (Hidden on Mobile) */}
-            <aside className="hidden md:flex fixed left-0 top-0 h-screen w-64 bg-dark-surface border-r border-dark-border flex-col z-20">
+            {/* Desktop Sidebar (Hidden on Mobile/Tablet) */}
+            <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-64 bg-dark-surface border-r border-dark-border flex-col z-20">
                 {/* Logo */}
                 <div className="p-6 border-b border-dark-border">
                     <h1 className="text-2xl font-bold text-gradient">
@@ -114,7 +114,7 @@ export default function Sidebar() {
             </aside>
 
             {/* Mobile Bottom Navigation (Hidden on Desktop) */}
-            <nav className="md:hidden fixed bottom-0 left-0 w-full h-16 bg-dark-surface border-t border-dark-border z-50 flex items-center justify-around px-2 pb-safe">
+            <nav className="lg:hidden fixed bottom-0 left-0 w-full h-16 bg-dark-surface border-t border-dark-border z-50 flex items-center justify-around px-2 pb-safe">
                 {navigation.map((item) => {
                     const isActive = pathname === item.href;
                     return (
