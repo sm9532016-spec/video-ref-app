@@ -117,7 +117,6 @@ export async function collectVideos(): Promise<CollectionResult> {
         const { id, collectedAt, ...videoData } = video;
         await createVideo({
             ...videoData,
-            collectedAt: new Date(), // Reset collection time to now
             collectionHistory: []
         });
         savedCount++;
