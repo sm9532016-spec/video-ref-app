@@ -135,7 +135,7 @@ export default function VideoCard({ video, className, onDelete }: VideoCardProps
                     {/* Delete Button */}
                     <button
                         onClick={handleDeleteClick}
-                        className="absolute bottom-2 left-2 bg-black/70 hover:bg-red-600/80 backdrop-blur-sm p-1.5 rounded text-xs opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 z-10"
+                        className="absolute bottom-2 left-2 bg-black/70 hover:bg-red-600/80 backdrop-blur-sm p-1.5 rounded text-xs opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-300 z-10"
                         aria-label="Delete video"
                     >
                         🗑️

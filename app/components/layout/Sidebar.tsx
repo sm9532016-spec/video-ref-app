@@ -63,7 +63,7 @@ export default function Sidebar() {
                 {/* Logo */}
                 <div className="p-6 border-b border-dark-border">
                     <h1 className="text-2xl font-bold text-gradient">
-                        Video Ref (Mobile Fix)
+                        Video Ref (Mobile Fix V2)
                     </h1>
                     <p className="text-sm text-dark-text-muted mt-1">
                         크리에이티브 분석
