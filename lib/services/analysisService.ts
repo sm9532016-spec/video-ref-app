@@ -2,46 +2,46 @@ import Groq from 'groq-sdk';
 import { VideoAnalysis, VideoReference } from '@/types';
 
 const groq = new Groq({
-    apiKey: process.env.GROQ_API_KEY || '',
+  apiKey: process.env.GROQ_API_KEY || '',
 });
 
 /**
  * Analyze a video using Groq AI
  */
 export async function analyzeVideo(video: VideoReference): Promise<VideoAnalysis> {
-    if (!process.env.GROQ_API_KEY) {
-        throw new Error('GROQ_API_KEY is not configured');
-    }
+  if (!process.env.GROQ_API_KEY) {
+    throw new Error('GROQ_API_KEY is not configured');
+  }
 
-    const prompt = createAnalysisPrompt(video);
+  const prompt = createAnalysisPrompt(video);
 
-    try {
-        const completion = await groq.chat.completions.create({
-            model: 'llama-3.3-70b-versatile',
-            messages: [
-                {
-                    role: 'system',
-                    content: 'You are an expert video production analyst. Provide detailed, actionable analysis in JSON format only. ALL text content must be in Korean language.'
-                },
-                {
-                    role: 'user',
-                    content: prompt
-                }
-            ],
-            temperature: 0.5, // Lower temperature for more structured output
-            response_format: { type: 'json_object' }
-        });
+  try {
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert video production analyst. Provide detailed, actionable analysis in JSON format only. ALL text content must be in Korean language.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      temperature: 0.5, // Lower temperature for more structured output
+      response_format: { type: 'json_object' }
+    });
 
-        const responseText = completion.choices[0]?.message?.content || '{}';
-        return parseAnalysisResponse(responseText, video.id);
-    } catch (error) {
-        console.error('Error analyzing video with Groq:', error);
-        throw new Error('Failed to analyze video with Groq AI');
-    }
+    const responseText = completion.choices[0]?.message?.content || '{}';
+    return parseAnalysisResponse(responseText, video.id);
+  } catch (error) {
+    console.error('Error analyzing video with Groq:', error);
+    throw new Error('Failed to analyze video with Groq AI');
+  }
 }
 
 function createAnalysisPrompt(video: VideoReference): string {
-    return `
+  return `
 You are a video production expert. Analyze the following video for a creator audience.
 Unlike typical reviews, focus purely on "production key points" and "replication techniques".
 
@@ -143,61 +143,63 @@ Output valid JSON matching this exact structure. All values must be in Korean (e
 }
 
 function parseAnalysisResponse(responseText: string, videoId: string): VideoAnalysis {
-    try {
-        const parsed = JSON.parse(responseText);
+  try {
+    // Clean up the response text (remove markdown code blocks if present)
+    const cleanedResponse = responseText.replace(/```json\n?|\n?```/g, '').trim();
+    const parsed = JSON.parse(cleanedResponse);
 
-        return {
-            id: `analysis-${Date.now()}`,
-            videoId: videoId,
-            oneLineSummary: parsed.oneLineSummary || '분석 결과 없음',
-            timecodeAnalysis: Array.isArray(parsed.timecodeAnalysis) ? parsed.timecodeAnalysis : [],
-            shotAnalysis: parsed.shotAnalysis || { averageCutLength: '-', shortestCut: '-', longestCut: '-', rhythmPattern: '-' },
-            visualAnalysis: parsed.visualAnalysis || { colorStrategy: '-', compositionRules: '-', spatialDepth: '-', textureExpress: '-' },
-            soundAnalysis: parsed.soundAnalysis || { hasMusic: false, soundEffectsRole: '-', silenceUsage: '-' },
-            replicationRecipe: parsed.replicationRecipe || { recommendedTools: [], keyFunctions: [], settings: '-', difficultyPoint: '-', corePoints: [] },
-            genreSpecifics: parsed.genreSpecifics || { genre: 'Motion Graphics' }, // Default
-            learningPoints: parsed.learningPoints || { experiments: [], difficultyLevel: 'Medium', difficultyReason: '-', mustWatchPoint: '-' },
-            overallScore: parsed.overallScore || 5,
-            keyTakeaways: parsed.keyTakeaways || [],
-            createdAt: new Date(),
+    return {
+      id: `analysis-${Date.now()}`,
+      videoId: videoId,
+      oneLineSummary: parsed.oneLineSummary || '분석 결과 없음',
+      timecodeAnalysis: Array.isArray(parsed.timecodeAnalysis) ? parsed.timecodeAnalysis : [],
+      shotAnalysis: parsed.shotAnalysis || { averageCutLength: '-', shortestCut: '-', longestCut: '-', rhythmPattern: '-' },
+      visualAnalysis: parsed.visualAnalysis || { colorStrategy: '-', compositionRules: '-', spatialDepth: '-', textureExpress: '-' },
+      soundAnalysis: parsed.soundAnalysis || { hasMusic: false, soundEffectsRole: '-', silenceUsage: '-' },
+      replicationRecipe: parsed.replicationRecipe || { recommendedTools: [], keyFunctions: [], settings: '-', difficultyPoint: '-', corePoints: [] },
+      genreSpecifics: parsed.genreSpecifics || { genre: 'Motion Graphics' }, // Default
+      learningPoints: parsed.learningPoints || { experiments: [], difficultyLevel: 'Medium', difficultyReason: '-', mustWatchPoint: '-' },
+      overallScore: parsed.overallScore || 5,
+      keyTakeaways: parsed.keyTakeaways || [],
+      createdAt: new Date(),
 
-            // Legacy mapping for compatibility if needed (optional)
-            hookAnalysis: { description: '-', effectiveness: 0, techniques: [], timestamp: 0 },
-            colorGrading: { dominantColors: [], mood: '-', colorPalette: '-', techniques: [] },
-            transitions: { types: [], frequency: 'medium', effectiveness: 0, examples: [] },
-            audio: { mood: '-', voiceover: false, soundEffects: false, effectiveness: 0 },
-            visualEffects: { types: [], quality: 'medium', purpose: '-' },
-            storytelling: { structure: '-', narrative: '-', emotionalArc: '-', effectiveness: 0 },
-            callToAction: { present: false }
-        } as VideoAnalysis; // Cast to satisfy strict type checking if legacy fields are missing in type definition but present in logic
-    } catch (e) {
-        console.error("Analysis parse error", e);
-        return createFallbackAnalysis(videoId);
-    }
+      // Legacy mapping for compatibility if needed (optional)
+      hookAnalysis: { description: '-', effectiveness: 0, techniques: [], timestamp: 0 },
+      colorGrading: { dominantColors: [], mood: '-', colorPalette: '-', techniques: [] },
+      transitions: { types: [], frequency: 'medium', effectiveness: 0, examples: [] },
+      audio: { mood: '-', voiceover: false, soundEffects: false, effectiveness: 0 },
+      visualEffects: { types: [], quality: 'medium', purpose: '-' },
+      storytelling: { structure: '-', narrative: '-', emotionalArc: '-', effectiveness: 0 },
+      callToAction: { present: false }
+    } as VideoAnalysis; // Cast to satisfy strict type checking if legacy fields are missing in type definition but present in logic
+  } catch (e) {
+    console.error("Analysis parse error", e);
+    return createFallbackAnalysis(videoId);
+  }
 }
 
 function createFallbackAnalysis(videoId: string): VideoAnalysis {
-    return {
-        id: `analysis-fail-${Date.now()}`,
-        videoId: videoId,
-        oneLineSummary: '분석에 실패했습니다. 다시 시도해주세요.',
-        timecodeAnalysis: [],
-        shotAnalysis: { averageCutLength: '-', shortestCut: '-', longestCut: '-', rhythmPattern: '-' },
-        visualAnalysis: { colorStrategy: '-', compositionRules: '-', spatialDepth: '-', textureExpress: '-' },
-        soundAnalysis: { hasMusic: false, soundEffectsRole: '-', silenceUsage: '-' },
-        replicationRecipe: { recommendedTools: [], keyFunctions: [], settings: '-', difficultyPoint: '-', corePoints: [] },
-        genreSpecifics: { genre: 'Motion Graphics' },
-        learningPoints: { experiments: [], difficultyLevel: 'Medium', difficultyReason: '-', mustWatchPoint: '-' },
-        overallScore: 0,
-        keyTakeaways: [],
-        createdAt: new Date(),
-        // Legacy fields for type safety
-        hookAnalysis: { description: '-', effectiveness: 0, techniques: [], timestamp: 0 },
-        colorGrading: { dominantColors: [], mood: '-', colorPalette: '-', techniques: [] },
-        transitions: { types: [], frequency: 'medium', effectiveness: 0, examples: [] },
-        audio: { mood: '-', voiceover: false, soundEffects: false, effectiveness: 0 },
-        visualEffects: { types: [], quality: 'medium', purpose: '-' },
-        storytelling: { structure: '-', narrative: '-', emotionalArc: '-', effectiveness: 0 },
-        callToAction: { present: false }
-    } as VideoAnalysis;
+  return {
+    id: `analysis-fail-${Date.now()}`,
+    videoId: videoId,
+    oneLineSummary: '분석에 실패했습니다. 다시 시도해주세요.',
+    timecodeAnalysis: [],
+    shotAnalysis: { averageCutLength: '-', shortestCut: '-', longestCut: '-', rhythmPattern: '-' },
+    visualAnalysis: { colorStrategy: '-', compositionRules: '-', spatialDepth: '-', textureExpress: '-' },
+    soundAnalysis: { hasMusic: false, soundEffectsRole: '-', silenceUsage: '-' },
+    replicationRecipe: { recommendedTools: [], keyFunctions: [], settings: '-', difficultyPoint: '-', corePoints: [] },
+    genreSpecifics: { genre: 'Motion Graphics' },
+    learningPoints: { experiments: [], difficultyLevel: 'Medium', difficultyReason: '-', mustWatchPoint: '-' },
+    overallScore: 0,
+    keyTakeaways: [],
+    createdAt: new Date(),
+    // Legacy fields for type safety
+    hookAnalysis: { description: '-', effectiveness: 0, techniques: [], timestamp: 0 },
+    colorGrading: { dominantColors: [], mood: '-', colorPalette: '-', techniques: [] },
+    transitions: { types: [], frequency: 'medium', effectiveness: 0, examples: [] },
+    audio: { mood: '-', voiceover: false, soundEffects: false, effectiveness: 0 },
+    visualEffects: { types: [], quality: 'medium', purpose: '-' },
+    storytelling: { structure: '-', narrative: '-', emotionalArc: '-', effectiveness: 0 },
+    callToAction: { present: false }
+  } as VideoAnalysis;
 }

@@ -75,10 +75,41 @@ export async function collectVideos(): Promise<CollectionResult> {
     // Filter out ANY video that has been collected before
     const newVideos = collectedVideos.filter(v => !existingUrls.has(v.videoUrl));
 
-    // Sort new videos by popularity score
-    const sortedNewVideos = newVideos
-        .sort((a, b) => (b.metrics?.score || 0) - (a.metrics?.score || 0))
-        .slice(0, collectionLimit);
+    // Sort new videos by popularity score within each platform
+    const videosByPlatform: Record<string, VideoReference[]> = {};
+    for (const video of newVideos) {
+        if (!videosByPlatform[video.platform]) {
+            videosByPlatform[video.platform] = [];
+        }
+        videosByPlatform[video.platform].push(video);
+    }
+
+    // Sort each platform's videos by score
+    for (const platform in videosByPlatform) {
+        videosByPlatform[platform].sort((a, b) => (b.metrics?.score || 0) - (a.metrics?.score || 0));
+    }
+
+    // Round-robin selection to ensure diversity
+    const sortedNewVideos: VideoReference[] = [];
+    const activePlatforms = Object.keys(videosByPlatform);
+    let iterations = 0;
+
+    while (sortedNewVideos.length < collectionLimit && activePlatforms.length > 0 && iterations < collectionLimit * 2) {
+        const platformIndex = iterations % activePlatforms.length;
+        const platform = activePlatforms[platformIndex];
+        const platformVideos = videosByPlatform[platform];
+
+        if (platformVideos && platformVideos.length > 0) {
+            sortedNewVideos.push(platformVideos.shift()!);
+        } else {
+            // No more videos for this platform, remove from rotation
+            activePlatforms.splice(platformIndex, 1);
+            // Adjust iteration count if we removed an item at or before current index
+            if (iterations > 0) iterations--;
+            continue;
+        }
+        iterations++;
+    }
 
     // Save only the new videos
     let savedCount = 0;
@@ -86,6 +117,7 @@ export async function collectVideos(): Promise<CollectionResult> {
         const { id, collectedAt, ...videoData } = video;
         await createVideo({
             ...videoData,
+            collectedAt: new Date(), // Reset collection time to now
             collectionHistory: []
         });
         savedCount++;
