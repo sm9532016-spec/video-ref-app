@@ -1,0 +1,863 @@
+[
+  {
+    "title": "The Art Of Editing…",
+    "thumbnailUrl": "https://i.ytimg.com/vi/qETWhpCPauw/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=qETWhpCPauw",
+    "brand": "Motion Array Tutorials",
+    "platform": "youtube",
+    "duration": 48,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=qETWhpCPauw",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-17T14:11:53.645Z"
+    },
+    "metrics": {
+      "views": 3148282,
+      "likes": 194117,
+      "comments": 1023,
+      "score": 6.14
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771337513647-yjnq3oapt",
+    "collectedAt": "2026-02-18T10:16:21.812Z",
+    "collectionHistory": [
+      "2026-02-17T14:11:53.647Z"
+    ]
+  },
+  {
+    "title": "Motion Graphic | Collage",
+    "thumbnailUrl": "https://i.ytimg.com/vi/CMqw9usH8-8/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=CMqw9usH8-8",
+    "brand": "fakeplastictree",
+    "platform": "youtube",
+    "duration": 69,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=CMqw9usH8-8",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-17T14:11:53.645Z"
+    },
+    "metrics": {
+      "views": 1728359,
+      "likes": 54807,
+      "comments": 392,
+      "score": 5.79
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771337513649-fmxbbmv8f",
+    "collectedAt": "2026-02-18T10:16:21.813Z",
+    "collectionHistory": [
+      "2026-02-17T14:11:53.649Z"
+    ]
+  },
+  {
+    "title": "Kinetic Typography After Effects [motion graphics]",
+    "thumbnailUrl": "https://i.ytimg.com/vi/2jTwX8jz-44/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=2jTwX8jz-44",
+    "brand": "BhutiaShengaPadma - popolaz",
+    "platform": "youtube",
+    "duration": 94,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=2jTwX8jz-44",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-17T14:11:53.645Z"
+    },
+    "metrics": {
+      "views": 1341787,
+      "likes": 8725,
+      "comments": 211,
+      "score": 5.47
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771337513650-ab9wvahy5",
+    "collectedAt": "2026-02-18T10:16:21.815Z",
+    "analysis": {
+      "id": "analysis-1771337779960-cztxe5mod",
+      "videoId": "1771337513650-ab9wvahy5",
+      "hookAnalysis": {
+        "description": "영상 시작부터 강렬한 텍스트 애니메이션으로 시청자의 관심을 끌어들이며, 뭔가 특별한 무언가가 시작된다는 것을 암시하는 훅이 사용됩니다.",
+        "effectiveness": 8,
+        "techniques": [
+          "동적 타이포그래피 사용",
+          "강렬한 색상 조합",
+          "단순하지만 강력한 메시지 전달"
+        ],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [
+          "#3498db",
+          "#f1c40f",
+          "#e74c3c"
+        ],
+        "mood": "活発하고 창의적인 분위기를 연출하여 시청자에게 에너지와 감동을 전달",
+        "colorPalette": "_pastel 색상과 강렬한 색상의 조합을 통해 현대적인 감각을 연출",
+        "techniques": [
+          "중앙값 색상 사용",
+          "대비를 이용한 색상 강조"
+        ]
+      },
+      "transitions": {
+        "types": [
+          "컷",
+          "페이드 인/아웃",
+          "줌"
+        ],
+        "frequency": "high",
+        "effectiveness": 9,
+        "examples": [
+          {
+            "timestamp": 10,
+            "type": "컷",
+            "description": "각 텍스트 애니메이션 사이의 컷 전환으로 빠르게 메시지를 전달"
+          }
+        ]
+      },
+      "audio": {
+        "musicGenre": "일렉트로닉/댄스 뮤직",
+        "mood": "신나고 활발한 분위기를 만들어 시청자의 흥미를 끌어들임",
+        "voiceover": false,
+        "soundEffects": true,
+        "effectiveness": 8
+      },
+      "visualEffects": {
+        "types": [
+          "Kinetic Typography",
+          "텍스트 애니메이션"
+        ],
+        "quality": "high",
+        "purpose": "텍스트를 동적으로 표현하여 시청자에게 메시지를 강렬하게 전달"
+      },
+      "storytelling": {
+        "structure": "문제-해결 구조가 아닌, 순수한 창의성과 감성을 위한 표현",
+        "narrative": "영상은 특정한 이야기를 전달하는 것이 아니라, 창의적인 표현을 통해 감동을 전달",
+        "emotionalArc": "시청자는 창의적인 표현에 따라 다양한 감정을 경험",
+        "effectiveness": 8
+      },
+      "callToAction": {
+        "present": false,
+        "type": "",
+        "text": ""
+      },
+      "overallScore": 8.5,
+      "keyTakeaways": [
+        "동적 타이포그래피를 사용하여 메시지 전달을 강화",
+        "색상과 음악을 통해 감성과 분위기를 연출",
+        "창의적인 표현을 통해 시청자의 감정을 자극"
+      ],
+      "createdAt": "2026-02-17T14:16:19.960Z"
+    },
+    "collectionHistory": [
+      "2026-02-17T14:11:53.650Z"
+    ]
+  },
+  {
+    "title": "Headjam Video Production",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/503148189-cd2b76fc1f5877f4d12f724a891f7e5256591ffbf5ecebbaf973b9d1afcdde69-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/69223050",
+    "brand": "Headjam",
+    "platform": "vimeo",
+    "duration": 268,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/69223050",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-17T14:11:52.930Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 58,
+      "comments": 0,
+      "score": 0.53
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771337513651-13mqygtck",
+    "collectedAt": "2026-02-18T10:16:21.817Z",
+    "analysis": {
+      "id": "analysis-1771337531189-zlvibry34",
+      "videoId": "1771337513651-13mqygtck",
+      "hookAnalysis": {
+        "description": "처음 0-3초의 훅은 브랜드 로고와 함께 시작되어 시청자의 관심을 끌기 위해 강렬한 그래픽과 색상으로 구성되어 있습니다.",
+        "effectiveness": 8,
+        "techniques": [
+          "시각적 요소의 집중",
+          "음향 효과의 활용",
+          "동적인 카메라 운동"
+        ],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [
+          "#3498db",
+          "#f1c40f",
+          "#2ecc71"
+        ],
+        "mood": "활기찬과 창의적인",
+        "colorPalette": "밝고 생동감 있는 팔레트로 젊은 감성과 창의성을 표현",
+        "techniques": [
+          "색상 대비의 강조",
+          "색상渐层의 사용"
+        ]
+      },
+      "transitions": {
+        "types": [
+          "컷",
+          "페이드",
+          "줌"
+        ],
+        "frequency": "medium",
+        "effectiveness": 7,
+        "examples": [
+          {
+            "timestamp": 10,
+            "type": "컷",
+            "description": "새로운 장면으로의突然한 전환으로 시청자의 관심을 유지"
+          }
+        ]
+      },
+      "audio": {
+        "musicGenre": "일렉트로닉/댄스",
+        "mood": "활기찬과 에너지 넘치는",
+        "voiceover": false,
+        "soundEffects": true,
+        "effectiveness": 9
+      },
+      "visualEffects": {
+        "types": [
+          "슬로우 모션",
+          "텍스트 오버레이"
+        ],
+        "quality": "high",
+        "purpose": "동적인 시각 효과를 통해 브랜드의 창의성과 전문성을 강조"
+      },
+      "storytelling": {
+        "structure": "문제-해결",
+        "narrative": "브랜드의 서비스를 통해 고객의 문제를 해결하는 과정",
+        "emotionalArc": "시청자의 관심과 호기심, 그리고 만족",
+        "effectiveness": 8
+      },
+      "callToAction": {
+        "present": true,
+        "type": "더 알아보기",
+        "placement": "end",
+        "effectiveness": 6,
+        "text": "브랜드의 웹사이트를 방문하여 더 많은 정보를 확인하세요"
+      },
+      "overallScore": 8,
+      "keyTakeaways": [
+        "시청자의 관심을 끌기 위해 강렬한 훅을 사용하는 것이 중요",
+        "동적인 시각 효과와 음향 효과를 통해 브랜드의 전문성을 강조",
+        "스토리텔링을 통해 시청자의 감정 여정을 일으키는 것이 핵심"
+      ],
+      "createdAt": "2026-02-17T14:12:11.190Z"
+    },
+    "collectionHistory": [
+      "2026-02-17T14:11:53.651Z"
+    ]
+  },
+  {
+    "title": "Motion Speaks: A Kinetic Typography Exploration",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/2037726209-a9d9f10c85b39ff6e3ba1ed4a9738272bd57c85c5e93e9451403c8da2a463fd8-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/1102080666",
+    "brand": "Soumit Deb",
+    "platform": "vimeo",
+    "duration": 30,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/1102080666",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-17T14:11:52.930Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "score": 0
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771337513653-55nf1xeja",
+    "collectedAt": "2026-02-17T14:11:53.653Z",
+    "analysis": {
+      "id": "analysis-1771338206964-fiuwaog4z",
+      "videoId": "1771337513653-55nf1xeja",
+      "hookAnalysis": {
+        "description": "처음 0-3초에 강렬한 텍스트 애니메이션으로 시청자의 관심을 끌고 있다. 이 시점에 사용된 대조적인 색상과 다이내믹한 움직임이 훅의 효과를 높여준다.",
+        "effectiveness": 8,
+        "techniques": [
+          "대조적인 색상 사용",
+          "다이내믹한 텍스트 애니메이션",
+          "사운드와의 조화"
+        ],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [
+          "#3498db",
+          "#f1c40f",
+          "#2ecc71"
+        ],
+        "mood": " 활기차고 다이내믹한 분위기를 자아낸다. 시청자에게 에너지와 창의성을 전달하는 역할을 한다.",
+        "colorPalette": "밝고 다이내믹한 팔레트로 시청자의 시선을 사로잡으며, 브랜드의 젊고 혁신적인 이미지를 강조한다.",
+        "techniques": [
+          "대조적인 색상 조합",
+          "채도 조절"
+        ]
+      },
+      "transitions": {
+        "types": [
+          "컷",
+          "페이드 인/아웃",
+          "줌 인/아웃"
+        ],
+        "frequency": "high",
+        "effectiveness": 9,
+        "examples": [
+          {
+            "timestamp": 5,
+            "type": "컷",
+            "description": "텍스트 애니메이션이 바뀌는 순간에 컷을 사용하여 시각적인 변화에 강조를 둔다."
+          }
+        ]
+      },
+      "audio": {
+        "musicGenre": "일렉트로닉/테크노",
+        "mood": "활기찬과 다이내믹한 음악이 시청자의 흥미를 끌어당긴다.",
+        "voiceover": false,
+        "soundEffects": true,
+        "effectiveness": 8
+      },
+      "visualEffects": {
+        "types": [
+          "텍스트 애니메이션",
+          "파티클 효과"
+        ],
+        "quality": "high",
+        "purpose": "시청자에게 창의적이고 다이내믹한 경험을 제공하기 위해 사용되었다. 텍스트 애니메이션은 메시지의 전달력을 높이고, 파티클 효과는 시각적인 흥미를 더한다."
+      },
+      "storytelling": {
+        "structure": "문제-해결 구조",
+        "narrative": "영상은 텍스트 애니메이션을 통해 브랜드의 메시지를 전달한다. 이는 창의적이면서도 정보를 효과적으로 전달하는 방법이다.",
+        "emotionalArc": "시청자는 처음부터 흥미를 느끼며, 영상이 진행될수록 브랜드와의 연결감을 느끼게 된다.",
+        "effectiveness": 8
+      },
+      "callToAction": {
+        "present": false,
+        "type": "",
+        "text": ""
+      },
+      "overallScore": 8.5,
+      "keyTakeaways": [
+        "대조적인 색상과 다이내믹한 움직임을 활용하여 시청자의 관심을 끌어당기는 것이 중요하다.",
+        "텍스트 애니메이션과 音樂을 적절히 조합하여 시각적이고 청각적인 expérience를 제공하는 것이 필요하다.",
+        "브랜드의 메시지를 창의적으로 전달하고, 시청자와的情感적인 연결을 맺는 것이 성공적인 비디오 콘텐츠의 핵심이다."
+      ],
+      "createdAt": "2026-02-17T14:23:26.964Z"
+    },
+    "collectionHistory": []
+  },
+  {
+    "title": "Promotional Motion Video Ad / After effect / Motion Ad",
+    "thumbnailUrl": "https://i.ytimg.com/vi/PJxoR2l-r-U/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=PJxoR2l-r-U",
+    "brand": "ShihorisArt",
+    "platform": "youtube",
+    "duration": 10,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=PJxoR2l-r-U",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T09:26:59.226Z"
+    },
+    "metrics": {
+      "views": 1869295,
+      "likes": 29567,
+      "comments": 0,
+      "score": 5.73
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771406819229-xyy21hr04",
+    "collectedAt": "2026-02-18T09:26:59.229Z",
+    "collectionHistory": []
+  },
+  {
+    "title": "Top 5 Best Effects in After Effects You Should Know!",
+    "thumbnailUrl": "https://i.ytimg.com/vi/8pl2qxO3Uoc/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=8pl2qxO3Uoc",
+    "brand": "SonduckFilm",
+    "platform": "youtube",
+    "duration": 47,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=8pl2qxO3Uoc",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T09:26:59.226Z"
+    },
+    "metrics": {
+      "views": 1178782,
+      "likes": 79514,
+      "comments": 159,
+      "score": 5.72
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771406819232-e3g7bcmja",
+    "collectedAt": "2026-02-18T09:26:59.232Z",
+    "collectionHistory": []
+  },
+  {
+    "title": "5 After Effects Tips You Should Know in After Effects #tutorial",
+    "thumbnailUrl": "https://i.ytimg.com/vi/8MQY8amb78s/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=8MQY8amb78s",
+    "brand": "SonduckFilm",
+    "platform": "youtube",
+    "duration": 47,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=8MQY8amb78s",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T09:26:59.226Z"
+    },
+    "metrics": {
+      "views": 1122751,
+      "likes": 75482,
+      "comments": 131,
+      "score": 5.7
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "id": "1771406819234-2chum3phl",
+    "collectedAt": "2026-02-18T09:26:59.234Z",
+    "collectionHistory": []
+  },
+  {
+    "title": "Toyota Camry: Service Advantage",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/141291340-97d85090fc5f7ee8f3fa4f2f20325e51461e4796d3e1ff9fa50a23846d893c42-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/sbstnc/toyota-camry",
+    "brand": "Substance",
+    "platform": "vimeo",
+    "duration": 30,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/sbstnc/toyota-camry",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T10:16:21.070Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 54,
+      "comments": 3,
+      "score": 0.52
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "collectionHistory": [],
+    "id": "1771409781819-fhpnir82j",
+    "collectedAt": "2026-02-18T10:16:21.819Z",
+    "analysis": {
+      "id": "analysis-1771409872501-vmajyv4xl",
+      "videoId": "1771409781819-fhpnir82j",
+      "hookAnalysis": {
+        "description": "처음 0-3초에 흰색 배경에 Toyota Camry 로고가 등장하여 시청자의 관심을 끌기 시작한다. 이 훅은 단순하지만 효과적으로 브랜드를 강조한다.",
+        "effectiveness": 8,
+        "techniques": [
+          "로고 노출",
+          "단순한 배경 사용",
+          "시각적 인상"
+        ],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [
+          "#3498db",
+          "#f1c40f",
+          "#2ecc71"
+        ],
+        "mood": "신뢰와 안정성",
+        "colorPalette": "차분한 톤의 블루와 옐로우를 사용하여 브랜드의 전문성과 친근함을 표현",
+        "techniques": [
+          "채도 조절",
+          "대비 사용"
+        ]
+      },
+      "transitions": {
+        "types": [
+          "컷",
+          "페이드"
+        ],
+        "frequency": "medium",
+        "effectiveness": 9,
+        "examples": [
+          {
+            "timestamp": 5,
+            "type": "컷",
+            "description": "차량의 외관에서 내부로의 전환"
+          }
+        ]
+      },
+      "audio": {
+        "musicGenre": "인스트루멘탈",
+        "mood": "화합과 평화",
+        "voiceover": true,
+        "soundEffects": false,
+        "effectiveness": 8
+      },
+      "visualEffects": {
+        "types": [
+          "텍스트 오버레이",
+          "스PLIT SCREEN"
+        ],
+        "quality": "high",
+        "purpose": "브랜드의 서비스 장점을 강조"
+      },
+      "storytelling": {
+        "structure": "문제-해결",
+        "narrative": "서비스의 편리함",
+        "emotionalArc": "편안함과 안정감",
+        "effectiveness": 9
+      },
+      "callToAction": {
+        "present": true,
+        "type": "서비스 예약",
+        "placement": "end",
+        "effectiveness": 9,
+        "text": "Toyota Camry, 서비스의 편리함을 경험하세요"
+      },
+      "overallScore": 8.5,
+      "keyTakeaways": [
+        "단순하지만 효과적인 훅을 사용하여 시청자의 관심을 끌기",
+        "색상 팔레트를 통해 브랜드의 정체성을 강조",
+        "smooth한 전환과 음악을 사용하여 시청자의 감정을 조절하기"
+      ],
+      "createdAt": "2026-02-18T10:17:52.501Z"
+    }
+  },
+  {
+    "title": "Motion Graphics Product Ads / After Effect",
+    "thumbnailUrl": "https://i.ytimg.com/vi/fLonJKaTQqM/hqdefault.jpg",
+    "videoUrl": "https://www.youtube.com/watch?v=fLonJKaTQqM",
+    "brand": "Akshay Barate",
+    "platform": "youtube",
+    "duration": 10,
+    "source": {
+      "platform": "youtube",
+      "originalUrl": "https://www.youtube.com/watch?v=fLonJKaTQqM",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T10:25:17.712Z"
+    },
+    "metrics": {
+      "views": 1563464,
+      "likes": 33036,
+      "comments": 363,
+      "score": 5.69
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "collectionHistory": [],
+    "id": "1771410317717-mztrsy2jq",
+    "collectedAt": "2026-02-18T10:25:17.717Z"
+  },
+  {
+    "title": "Demo Reel 2013/2014",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/474371010-d78141a574980e136924616a10bff6e8bd74570c128edcd9532c9542a91821a7-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/94455611",
+    "brand": "Francisco Dias",
+    "platform": "vimeo",
+    "duration": 79,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/94455611",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T10:25:17.073Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 3,
+      "comments": 0,
+      "score": 0.18
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "collectionHistory": [],
+    "id": "1771410317720-3cfrpp34j",
+    "collectedAt": "2026-02-18T10:25:17.720Z"
+  },
+  {
+    "title": "Kinetic Typography - Gears of War",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/508991105-7af881dc0ec02ab0c509543f58b381472c38dcb59cec8290353e7a5677181b8b-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/107862911",
+    "brand": "Matthew Price",
+    "platform": "vimeo",
+    "duration": 47,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/107862911",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T10:25:17.073Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 2,
+      "comments": 0,
+      "score": 0.14
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "collectionHistory": [],
+    "id": "1771410317722-yose8pysn",
+    "collectedAt": "2026-02-18T10:25:17.722Z",
+    "analysis": {
+      "id": "analysis-1771411584088",
+      "videoId": "1771410317722-yose8pysn",
+      "oneLineSummary": "키네틱 타이포그라피를 이용한 게임 홍보 영상",
+      "timecodeAnalysis": [
+        {
+          "timestamp": "0:00-0:03",
+          "content": "Hook",
+          "productionPoint": "시각적 인상 깊은 타이포그래피로 시작"
+        },
+        {
+          "timestamp": "0:03-0:10",
+          "content": "Development",
+          "productionPoint": "기어즈 오브 워 게임의 세계관을 표현하는 리듬감 있는 그래픽"
+        },
+        {
+          "timestamp": "0:10-0:17",
+          "content": "Rising Action",
+          "productionPoint": "타이포그래피와 그래픽이 결합하여 게임의 긴장감을 높이는 장면"
+        },
+        {
+          "timestamp": "0:17-0:25",
+          "content": "Climax",
+          "productionPoint": "게임의 핵심 장면을 강조하는 타이포그래피와 그래픽의 절정"
+        },
+        {
+          "timestamp": "0:25-0:47",
+          "content": "Conclusion",
+          "productionPoint": "게임의 로고와 타이틀을 강조하는 마무리 장면"
+        }
+      ],
+      "shotAnalysis": {
+        "averageCutLength": "2.5초",
+        "shortestCut": "0:10-0:12의 짧은 컷으로 게임의 빠른 전투 장면을 표현",
+        "longestCut": "0:25-0:35의 장면으로 게임의 클라이맥스를 강조",
+        "rhythmPattern": "초반 빠른 템포 -> 중반 느린 템포 -> 후반 빠른 템포"
+      },
+      "visualAnalysis": {
+        "colorStrategy": "다크하고 강렬한 색상으로 게임의 세계관을 표현",
+        "compositionRules": "중심을 강조하는 구성과 대칭을 이용한 밸런스",
+        "spatialDepth": "자연스러운 깊이감을 표현하기 위한 블러와陰影의 사용",
+        "textureExpress": "메탈릭한 텍스처를 이용하여 게임의 기계적인 요소를 강조"
+      },
+      "soundAnalysis": {
+        "hasMusic": true,
+        "soundEffectsRole": "타이포그래피와 그래픽의 동작에 싱크로된 사운드 이펙트",
+        "silenceUsage": "장면의 긴장감을 높이기 위한 적절한 무음 구간"
+      },
+      "replicationRecipe": {
+        "recommendedTools": [
+          "Adobe After Effects",
+          "Cinema 4D"
+        ],
+        "keyFunctions": [
+          "키네틱 타이포그래피 플러그인",
+          "3D 그래픽 렌더링"
+        ],
+        "settings": "해상도 1080p, 프레임レート 60fps, 렌더링 시간 약 10시간",
+        "difficultyPoint": "타이포그래피와 그래픽의 동기화",
+        "corePoints": [
+          "타이포그래피 디자인",
+          "3D 그래픽 모델링",
+          "음향 싱크로화"
+        ]
+      },
+      "genreSpecifics": {
+        "genre": "Motion Graphics",
+        "easePattern": "부드러운 Ease-In과 Ease-Out을 이용한 자연스러운 모션",
+        "loopStructure": "루프 구조를 이용하여 무한 반복되는 모션 그래픽",
+        "transitionTechniques": "타이포그래피와 그래픽의 전환을 위한 스무스한 트랜지션 기법",
+        "moduleSystem": true,
+        "rhythmSync": "음악과 사운드 이펙트의 리듬에 싱크로된 모션 그래픽",
+        "speedChangeSegment": "0:17-0:25의 클라이맥스 장면에서 속도 변화"
+      },
+      "learningPoints": {
+        "experiments": [
+          "다양한 타이포그래피 디자인 시도",
+          "3D 그래픽 모델링 연습",
+          "음향 싱크로화 실험"
+        ],
+        "difficultyLevel": "Medium",
+        "difficultyReason": "타이포그래피와 그래픽의 동기화 및 3D 모델링의 난이도",
+        "mustWatchPoint": "0:17-0:25의 클라이맥스 장면"
+      },
+      "overallScore": 8,
+      "keyTakeaways": [
+        "키네틱 타이포그래피를 이용한 게임 홍보 영상의 제작",
+        "타이포그래피와 그래픽의 동기화",
+        "3D 그래픽 모델링과 음향 싱크로화"
+      ],
+      "createdAt": "2026-02-18T10:46:24.088Z",
+      "hookAnalysis": {
+        "description": "-",
+        "effectiveness": 0,
+        "techniques": [],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [],
+        "mood": "-",
+        "colorPalette": "-",
+        "techniques": []
+      },
+      "transitions": {
+        "types": [],
+        "frequency": "medium",
+        "effectiveness": 0,
+        "examples": []
+      },
+      "audio": {
+        "mood": "-",
+        "voiceover": false,
+        "soundEffects": false,
+        "effectiveness": 0
+      },
+      "visualEffects": {
+        "types": [],
+        "quality": "medium",
+        "purpose": "-"
+      },
+      "storytelling": {
+        "structure": "-",
+        "narrative": "-",
+        "emotionalArc": "-",
+        "effectiveness": 0
+      },
+      "callToAction": {
+        "present": false
+      }
+    }
+  },
+  {
+    "title": "rc visual studio",
+    "thumbnailUrl": "https://i.vimeocdn.com/video/464201720-4e5271098849d6bf83605879fef725096077b0e4d70604574a1afc7a4dd7b48b-d_1920x1080?&r=pad&region=us",
+    "videoUrl": "https://vimeo.com/86501534",
+    "brand": "Mateo Rozo",
+    "platform": "vimeo",
+    "duration": 50,
+    "source": {
+      "platform": "vimeo",
+      "originalUrl": "https://vimeo.com/86501534",
+      "collectedBy": "auto",
+      "collectionDate": "2026-02-18T10:25:17.073Z"
+    },
+    "metrics": {
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "score": 0
+    },
+    "tags": [
+      "Motion Design motion graphics animation visual effects After Effects Motion Graphics Kinetic Typography"
+    ],
+    "collectionHistory": [],
+    "id": "1771410317724-49cgjsf8m",
+    "collectedAt": "2026-02-18T10:25:17.724Z",
+    "analysis": {
+      "id": "analysis-1771410446009-nuo1l95rd",
+      "videoId": "1771410317724-49cgjsf8m",
+      "hookAnalysis": {
+        "description": "초기 0-3초 동안 화면에 나타나는 로고와 함께 시작되는 영상은 Mateo Rozo의 브랜드 아이덴티티를 강조한다. 초기의 단순하고 깔끔한 로고 애니메이션은 시청자의 관심을 끌기에 충분하다.",
+        "effectiveness": 8,
+        "techniques": [
+          "로고 애니메이션",
+          "단순한 배경 사용",
+          "브랜드 색상 일관성"
+        ],
+        "timestamp": 0
+      },
+      "colorGrading": {
+        "dominantColors": [
+          "#3498db",
+          "#2ecc71",
+          "#f1c40f"
+        ],
+        "mood": "화면에 나타나는 밝고鲜한 색상은 năng동적이고 창의적인 분위기를 조성한다.",
+        "colorPalette": "_pastel 색상과 밝은 색상이 조합된 팔레트는 전체적으로 현대적이고 젊은 감성을 전달한다.",
+        "techniques": [
+          "색상 대비",
+          "부드러운 그라데이션"
+        ]
+      },
+      "transitions": {
+        "types": [
+          "컷",
+          "페이드 인/아웃",
+          "줌 인/아웃"
+        ],
+        "frequency": "medium",
+        "effectiveness": 7,
+        "examples": [
+          {
+            "timestamp": 10,
+            "type": "컷",
+            "description": "로고 애니메이션에서 바로 실제 제품 데모로 넘어가는 컷은 시청자의 관심을 유지하기에 적절하다."
+          }
+        ]
+      },
+      "audio": {
+        "musicGenre": "일렉트로닉/댄스 음악",
+        "mood": "배경 음악은 전체적으로 활기차고 에너지 넘치는 분위기를 조성한다.",
+        "voiceover": false,
+        "soundEffects": true,
+        "effectiveness": 9
+      },
+      "visualEffects": {
+        "types": [
+          "슬로우 모션",
+          "텍스트 오버레이"
+        ],
+        "quality": "high",
+        "purpose": "visual 효과들은 제품의 기능과 디자인을 강조하는 데 사용된다."
+      },
+      "storytelling": {
+        "structure": "문제-해결",
+        "narrative": "영상은 Mateo Rozo의 제품을 소개하고 그 lợi점을 강조하는 간단한 내러티브를 가지고 있다.",
+        "emotionalArc": "시청자는 제품의 독창성과 기능에 대한 흥미를 느끼게 된다.",
+        "effectiveness": 8
+      },
+      "callToAction": {
+        "present": true,
+        "type": "더 알아보기",
+        "placement": "end",
+        "effectiveness": 6,
+        "text": "자세한 정보는 Mateo Rozo 웹사이트에서 확인하십시오."
+      },
+      "overallScore": 8,
+      "keyTakeaways": [
+        "시청자의 관심을 끌기 위한 초기 훅의 중요성",
+        "브랜드 아이덴티티와 일관성을 유지하기 위한 색상 팔레트의 사용",
+        "전체적인 분위기와 Mood를 강조하기 위한 음악과 사운드 이펙트의 선택"
+      ],
+      "createdAt": "2026-02-18T10:27:26.009Z"
+    }
+  }
+]

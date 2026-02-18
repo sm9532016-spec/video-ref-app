@@ -1,0 +1,28 @@
+{
+  "id": "default",
+  "topic": "Motion Design",
+  "keywords": [
+    "motion graphics",
+    "animation",
+    "visual effects"
+  ],
+  "platforms": [
+    "vimeo",
+    "youtube"
+  ],
+  "collectionLimit": 5,
+  "sortBy": "views",
+  "autoAnalyze": true,
+  "createdAt": "2026-02-17T08:30:09.830Z",
+  "updatedAt": "2026-02-17T14:23:13.838Z",
+  "tools": [
+    "After Effects"
+  ],
+  "genres": [
+    "Motion Graphics"
+  ],
+  "styles": [
+    "Kinetic Typography"
+  ],
+  "timePeriod": "month"
+}
