@@ -36,19 +36,24 @@ export default function Header() {
     };
 
     return (
-        <header className="fixed top-0 right-0 left-64 h-16 bg-dark-surface/80 backdrop-blur-lg border-b border-dark-border z-10">
-            <div className="h-full px-6 flex items-center justify-between">
+        <header className="fixed top-0 right-0 left-0 md:left-64 h-16 bg-dark-surface/80 backdrop-blur-lg border-b border-dark-border z-10 transition-all duration-300">
+            <div className="h-full px-4 md:px-6 flex items-center justify-between gap-4">
+                {/* Mobile Logo */}
+                <div className="md:hidden flex-shrink-0 font-bold text-gradient text-lg">
+                    VR
+                </div>
+
                 {/* Search Bar */}
                 <div className="flex-1 max-w-xl">
                     <div className="relative">
                         <input
                             type="text"
-                            placeholder="영상, 브랜드, 분석 내용 검색..."
+                            placeholder="검색..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 pl-10 text-dark-text placeholder:text-dark-text-muted focus:outline-none focus:border-accent-primary/50 transition-colors"
+                            className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 pl-9 md:pl-10 text-sm md:text-base text-dark-text placeholder:text-dark-text-muted focus:outline-none focus:border-accent-primary/50 transition-colors"
                         />
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-text-muted">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-dark-text-muted text-sm md:text-base">
                             🔍
                         </span>
                         {searchQuery && (
@@ -68,22 +73,23 @@ export default function Header() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 md:gap-4">
                     {/* Collect Videos Button */}
                     <button
                         onClick={handleCollect}
                         disabled={isCollecting}
-                        className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed px-3 py-2 md:px-4 md:py-2 text-sm md:text-base whitespace-nowrap"
                     >
                         {isCollecting ? (
                             <>
-                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                                <span>수집 중...</span>
+                                <div className="animate-spin rounded-full h-3 w-3 md:h-4 md:w-4 border-b-2 border-white" />
+                                <span className="hidden md:inline">수집 중...</span>
                             </>
                         ) : (
                             <>
                                 <span>⚡</span>
-                                <span>영상 수집</span>
+                                <span className="hidden md:inline">영상 수집</span>
+                                <span className="md:hidden">수집</span>
                             </>
                         )}
                     </button>
