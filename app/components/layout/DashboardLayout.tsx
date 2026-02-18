@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <SearchProvider>
-            <div className="min-h-screen bg-dark-bg">
+            <div className="min-h-screen bg-dark-bg overflow-x-hidden">
                 <Sidebar />
                 <Header />
                 <main className="md:ml-64 pt-16 min-h-screen pb-20 md:pb-0">

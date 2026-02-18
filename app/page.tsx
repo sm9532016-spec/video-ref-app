@@ -81,12 +81,12 @@ function DateFolder({
       {/* Folder Header */}
       <button
         onClick={() => setIsOpen(o => !o)}
-        className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/5 transition-colors rounded-xl"
+        className="w-full flex flex-col md:flex-row items-start md:items-center justify-between px-4 md:px-5 py-4 hover:bg-white/5 transition-colors rounded-xl gap-3 md:gap-0"
       >
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full md:w-auto">
           {/* Folder icon */}
           <span className="text-2xl">{isOpen ? '📂' : '📁'}</span>
-          <div className="text-left">
+          <div className="text-left flex-1 md:flex-none">
             <div className="flex items-center gap-2">
               <span className={`font-bold text-lg ${isToday ? 'text-accent-primary' : 'text-dark-text'}`}>
                 {formatDateLabel(dateKey)}
@@ -101,27 +101,31 @@ function DateFolder({
               <p className="text-xs text-dark-text-muted">{formatDateFull(dateKey)}</p>
             )}
           </div>
+          {/* Chevron (Mobile: Right aligned) */}
+          <span className={`text-dark-text-muted transition-transform duration-300 md:hidden ml-auto ${isOpen ? 'rotate-180' : ''}`}>
+            ▼
+          </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
           {/* Stats badges */}
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex flex-wrap items-center gap-2 text-sm">
             <span className="px-2.5 py-1 bg-dark-surface-light rounded-lg text-dark-text-muted">
               🎬 {videos.length}개
             </span>
             {analyzedCount > 0 && (
               <span className="px-2.5 py-1 bg-accent-primary/10 text-accent-primary rounded-lg">
-                ✅ {analyzedCount}개 분석
+                ✅ {analyzedCount}
               </span>
             )}
             {unanalyzed.length > 0 && (
               <span className="px-2.5 py-1 bg-yellow-500/10 text-yellow-400 rounded-lg">
-                ⏳ {unanalyzed.length}개 미분석
+                ⏳ {unanalyzed.length}
               </span>
             )}
           </div>
-          {/* Chevron */}
-          <span className={`text-dark-text-muted transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+          {/* Chevron (Desktop) */}
+          <span className={`text-dark-text-muted transition-transform duration-300 hidden md:block ${isOpen ? 'rotate-180' : ''}`}>
             ▼
           </span>
         </div>
