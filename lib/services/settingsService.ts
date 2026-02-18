@@ -6,16 +6,15 @@ const DEFAULT_SETTINGS_ID = 'default';
 
 // Default settings
 const DEFAULT_SETTINGS: Omit<UserSettings, 'id' | 'createdAt' | 'updatedAt'> = {
-    topic: 'motion design',
-    keywords: ['motion graphics', 'animation', 'visual effects'],
-    platforms: ['youtube', 'behance', 'vimeo'],
-    collectionLimit: 5,
-    sortBy: 'views',
+    studyFocus: 'Motion Rhythm Analysis',
+    genre: 'Motion Graphics',
+    tools: ['After Effects'],
+    styles: ['Minimal'],
+    timePeriod: '1_year',
+    collectionLimit: 3,
     autoAnalyze: true,
-    tools: [],
-    genres: [],
-    styles: [],
-    timePeriod: 'all',
+    sortBy: 'creative_quality',
+    platforms: ['youtube', 'vimeo', 'behance'],
 };
 
 /**

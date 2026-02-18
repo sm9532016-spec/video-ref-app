@@ -202,18 +202,25 @@ export interface CallToActionAnalysis {
 
 export interface UserSettings {
     id: string;
-    topic: string; // e.g., "motion design", "color grading"
-    keywords: string[]; // Additional search keywords
-    platforms: Platform[]; // Selected platforms to collect from
-    collectionLimit: number; // Number of videos to collect per run
-    sortBy: 'views' | 'likes' | 'recent' | 'relevance';
-    autoAnalyze: boolean; // Auto-analyze collected videos
 
-    // Advanced filters
-    tools?: string[]; // e.g., ['After Effects', 'Cinema 4D']
-    genres?: string[]; // e.g., ['Motion Graphics', 'VFX']
-    styles?: string[]; // e.g., ['Kinetic Typography', 'Liquid Motion']
-    timePeriod?: 'day' | 'week' | 'month' | 'year' | 'all';
+    // 1. Study Focus (Single Select)
+    studyFocus: string;
+
+    // 2. Genre (Single Select)
+    genre: string;
+
+    // 3. Scope
+    tools: string[]; // Max 2
+    styles: string[]; // Max 2
+    timePeriod: '3_months' | '6_months' | '1_year' | 'all'; // Default: '1_year'
+
+    // 4. Daily Plan
+    collectionLimit: number; // Default 3, Max 5
+    autoAnalyze: boolean; // Default true
+    sortBy: 'creative_quality' | 'editors_pick'; // Removed 'trending'
+
+    // Legacy fields kept optional for migration or removed if verified safe
+    platforms?: Platform[]; // Kept for backend compatibility for now
 
     createdAt: Date;
     updatedAt: Date;

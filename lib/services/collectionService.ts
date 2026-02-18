@@ -8,26 +8,70 @@ import { getAllVideos, createVideo, updateVideo } from './videoService';
 /**
  * Collect videos from all configured platforms
  */
+// Helper to get date from timePeriod
+function getPublishedAfterDate(period: string): Date | undefined {
+    const now = new Date();
+    switch (period) {
+        case '3_months':
+            return new Date(now.setMonth(now.getMonth() - 3));
+        case '6_months':
+            return new Date(now.setMonth(now.getMonth() - 6));
+        case '1_year':
+            return new Date(now.setFullYear(now.getFullYear() - 1));
+        case 'all':
+        default:
+            return undefined;
+    }
+}
+
+/**
+ * Collect videos from all configured platforms
+ */
 export async function collectVideos(): Promise<CollectionResult> {
     const settings = await getSettings();
-    const { topic, keywords, tools, genres, styles, timePeriod, platforms, collectionLimit, sortBy } = settings;
+    // Use new fields with fallbacks
+    const {
+        studyFocus = 'Motion Design',
+        genre = 'Motion Graphics',
+        tools = [],
+        styles = [],
+        timePeriod = '1_year',
+        platforms = ['youtube'],
+        collectionLimit = 3,
+        sortBy = 'creative_quality'
+    } = settings;
 
-    // Build enhanced search query with advanced filters
-    const searchTerms = [
-        topic,
-        ...keywords,
-        ...(tools || []),
-        ...(genres || []),
-        ...(styles || []),
-    ].filter(Boolean); // Remove empty values
+    // 1. Construct Quality-Focused Query
+    // Base: "Motion Graphics" + "Motion Rhythm"
+    const baseTerms = [genre, studyFocus];
 
-    const searchQuery = searchTerms.join(' ');
+    // Tools & Styles: "After Effects", "Minimal"
+    const nuanceTerms = [...(tools || []), ...(styles || [])];
+
+    // Negative Keywords (Crucial for "Finished Work Only")
+    const negativeKeywords = [
+        '-tutorial', '-how to', '-course', '-class', // Education
+        '-making of', '-behind the scenes', '-breakdown', '-process', // Meta
+        '-template', '-free download', '-intro', '-opener' // Assets
+    ];
+
+    // Combine: "Motion Graphics Motion Rhythm After Effects Minimal -tutorial ..."
+    const searchQuery = [
+        ...baseTerms,
+        ...nuanceTerms,
+        ...negativeKeywords
+    ].filter(Boolean).join(' ');
+
+    // 2. Determine Time Range
+    const publishedAfter = getPublishedAfterDate(timePeriod);
+
+    console.log(`[Collection] Query: "${searchQuery}" | After: ${publishedAfter?.toISOString() ?? 'ALL'}`);
+
     const collectedVideos: VideoReference[] = [];
     const platformBreakdown: { platform: Platform; count: number }[] = [];
 
-    // Calculate videos per platform - fetch more to ensure we find new ones
-    // Fetch 'collectionLimit' from EACH platform to have a large pool
-    const videosPerPlatform = collectionLimit;
+    // Fetch 'collectionLimit' * 2 to filter and pick best
+    const fetchLimit = collectionLimit * 2;
 
     // Collect from each platform
     for (const platform of platforms) {
@@ -37,20 +81,22 @@ export async function collectVideos(): Promise<CollectionResult> {
             if (platform === 'youtube') {
                 videos = await searchYouTubeVideos(
                     searchQuery,
-                    videosPerPlatform,
-                    sortBy === 'views' ? 'viewCount' : sortBy === 'recent' ? 'date' : 'relevance'
+                    fetchLimit,
+                    sortBy === 'creative_quality' ? 'relevance' : 'viewCount', // 'relevance' implies likely to match quality focus
+                    publishedAfter
                 );
             } else if (platform === 'behance') {
+                // Behance API update skipped for now, using existing signature
                 videos = await searchBehanceProjects(
                     searchQuery,
-                    videosPerPlatform,
-                    sortBy === 'views' ? 'views' : sortBy === 'recent' ? 'recent' : 'appreciations'
+                    fetchLimit,
+                    'appreciations' // Default to quality metric
                 );
             } else if (platform === 'vimeo') {
                 videos = await searchVimeoVideos(
                     searchQuery,
-                    videosPerPlatform,
-                    sortBy === 'views' ? 'plays' : sortBy === 'recent' ? 'date' : sortBy === 'likes' ? 'likes' : 'relevant'
+                    fetchLimit,
+                    'relevant'
                 );
             }
 

@@ -59,7 +59,8 @@ function calculatePopularityScore(views: number, likes: number): number {
 export async function searchYouTubeVideos(
     query: string,
     maxResults: number = 10,
-    sortBy: 'viewCount' | 'relevance' | 'date' = 'viewCount'
+    sortBy: 'viewCount' | 'relevance' | 'date' = 'viewCount',
+    publishedAfter?: Date
 ): Promise<VideoReference[]> {
     if (!YOUTUBE_API_KEY) {
         throw new Error('YouTube API key is not configured');
@@ -77,6 +78,7 @@ export async function searchYouTubeVideos(
                 order: sortBy,
                 videoDefinition: 'high',
                 videoDuration: 'short', // Focus on short videos (< 4 minutes)
+                publishedAfter: publishedAfter ? publishedAfter.toISOString() : undefined,
             },
         });
 

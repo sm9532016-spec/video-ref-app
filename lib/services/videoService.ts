@@ -8,15 +8,7 @@ import Video from '@/models/Video';
 export async function getAllVideos(): Promise<VideoReference[]> {
     await dbConnect();
     const videos = await Video.find({}).sort({ collectedAt: -1 }).lean();
-    return JSON.parse(JSON.stringify(videos)); // Serialization for Next.js if needed, or just return. 
-    // Actually, lean() returns objects with Dates. Next.js server components can handle Dates but client components might need serialization.
-    // The previous implementation returned Date objects.
-    // Mongoose lean() returns Date objects for Date fields.
-    // So it should be fine.
-    // However, _id needs to be handled if it leaks. 
-    // The previous code didn't have _id.
-    // I will return as is, assuming callers handle it or I might strip _id.
-    return videos as unknown as VideoReference[];
+    return JSON.parse(JSON.stringify(videos));
 }
 
 /**
@@ -113,4 +105,3 @@ export async function getTodaysVideos(): Promise<VideoReference[]> {
 
     return getVideosByDateRange(today, tomorrow);
 }
-

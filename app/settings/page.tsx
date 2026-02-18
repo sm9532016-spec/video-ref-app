@@ -3,96 +3,62 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import DashboardLayout from '../components/layout/DashboardLayout';
-import { UserSettings, Platform } from '@/types';
+import { UserSettings } from '@/types';
 
-const PLATFORM_OPTIONS: { value: Platform; label: string; icon: string }[] = [
-    { value: 'youtube', label: 'YouTube', icon: '📺' },
-    { value: 'behance', label: 'Behance', icon: '🎨' },
-    { value: 'vimeo', label: 'Vimeo', icon: '🎬' },
-];
+// --- Constants & Options ---
 
-const SORT_OPTIONS = [
-    { value: 'views', label: 'Most Views' },
-    { value: 'likes', label: 'Most Likes' },
-    { value: 'recent', label: 'Most Recent' },
-    { value: 'relevance', label: 'Most Relevant' },
-];
-
-const TOPIC_PRESETS = [
-    'Motion Design',
-    'Color Grading',
-    'Transitions',
-    'Typography Animation',
-    'Visual Effects',
-    'Compositing',
-    '3D Animation',
-    'Character Animation',
-];
-
-const TOOL_OPTIONS = [
-    'After Effects',
-    'Cinema 4D',
-    'Blender',
-    'Houdini',
-    'Maya',
-    '3ds Max',
-    'Unreal Engine',
-    'Unity',
+const STUDY_FOCUS_OPTIONS = [
+    { value: 'Motion Rhythm', label: '모션 리듬 분석', desc: '타이밍과 속도감 연구' },
+    { value: 'Transition', label: '트랜지션 연구', desc: '장면 전환 기법 분석' },
+    { value: 'Ad Structure', label: '광고 설득 구조', desc: '훅과 스토리텔링' },
+    { value: 'Product Shot', label: '제품샷 연출', desc: '매력적인 제품 보여주기' },
+    { value: 'Camera Move', label: '카메라 무브', desc: '역동적인 앵글 분석' },
+    { value: 'Color/Lighting', label: '컬러/조명 연구', desc: '분위기와 톤앤매너' },
+    { value: 'Typo Animation', label: '타이포 애니메이션', desc: '텍스트 움직임 연구' },
 ];
 
 const GENRE_OPTIONS = [
-    'Motion Graphics',
-    'VFX',
-    '3D Animation',
-    '2D Animation',
-    'Compositing',
-    'Character Animation',
-    'Product Visualization',
+    { value: 'Motion Graphics', label: 'Motion Graphics', icon: '🎨' },
+    { value: 'Advertising', label: 'Advertising', icon: '📢' },
+    { value: 'Film', label: 'Film', icon: '🎬' },
+    { value: 'Media Art', label: 'Media Art', icon: '🌌' },
 ];
 
-const STYLE_OPTIONS = [
-    'Kinetic Typography',
-    'Liquid Motion',
-    'Glitch Art',
-    'Minimalist',
-    'Abstract',
-    'Isometric',
-    'Cel Shading',
-    'Photorealistic',
-];
+const TOOL_OPTIONS = ['After Effects', 'Blender', 'Unreal Engine', 'Cinema 4D'];
+const STYLE_OPTIONS = ['Minimal', 'Abstract', 'Photorealistic', 'Liquid Motion', 'Glitch'];
 
 const TIME_PERIOD_OPTIONS = [
-    { value: 'day', label: 'Last 24 hours' },
-    { value: 'week', label: 'Last week' },
-    { value: 'month', label: 'Last month' },
-    { value: 'year', label: 'Last year' },
-    { value: 'all', label: 'All time' },
+    { value: '3_months', label: 'Last 3 Months', desc: '최신 트렌드' },
+    { value: '6_months', label: 'Last 6 Months', desc: '' },
+    { value: '1_year', label: 'Last 1 Year', desc: '표준' },
+    { value: 'all', label: 'All Time', desc: '레전드' },
 ];
+
+const SORT_OPTIONS = [
+    { value: 'creative_quality', label: 'Creative Quality' },
+    { value: 'editors_pick', label: 'Editors Pick' },
+];
+
+// --- Main Component ---
 
 export default function SettingsPage() {
     const router = useRouter();
-    const [settings, setSettings] = useState<UserSettings | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
-    // Form state
-    const [topic, setTopic] = useState('');
-    const [keywords, setKeywords] = useState<string[]>([]);
-    const [keywordInput, setKeywordInput] = useState('');
-    const [platforms, setPlatforms] = useState<Platform[]>([]);
-    const [collectionLimit, setCollectionLimit] = useState(5);
-    const [sortBy, setSortBy] = useState<'views' | 'likes' | 'recent' | 'relevance'>('views');
-    const [autoAnalyze, setAutoAnalyze] = useState(true);
+    // State matching UserSettings interface
+    const [settings, setSettings] = useState<Partial<UserSettings>>({
+        studyFocus: 'Motion Rhythm',
+        genre: 'Motion Graphics',
+        tools: ['After Effects'],
+        styles: ['Minimal'],
+        timePeriod: '1_year',
+        collectionLimit: 3,
+        autoAnalyze: true,
+        sortBy: 'creative_quality',
+    });
 
-    // Advanced filters
-    const [tools, setTools] = useState<string[]>([]);
-    const [genres, setGenres] = useState<string[]>([]);
-    const [styles, setStyles] = useState<string[]>([]);
-    const [timePeriod, setTimePeriod] = useState<'day' | 'week' | 'month' | 'year' | 'all'>('all');
-
-    // Load settings on mount
     useEffect(() => {
         loadSettings();
     }, []);
@@ -102,23 +68,16 @@ export default function SettingsPage() {
             setIsLoading(true);
             const response = await fetch('/api/settings');
             const data = await response.json();
-
             if (data.success && data.data) {
-                const s = data.data;
-                setSettings(s);
-                setTopic(s.topic);
-                setKeywords(s.keywords);
-                setPlatforms(s.platforms);
-                setCollectionLimit(s.collectionLimit);
-                setSortBy(s.sortBy);
-                setAutoAnalyze(s.autoAnalyze);
-                setTools(s.tools || []);
-                setGenres(s.genres || []);
-                setStyles(s.styles || []);
-                setTimePeriod(s.timePeriod || 'all');
+                // Ensure defaults if fields are missing in migration
+                setSettings({
+                    ...data.data,
+                    tools: data.data.tools || [],
+                    styles: data.data.styles || [],
+                });
             }
         } catch (err) {
-            setError('Failed to load settings');
+            setMessage({ text: '설정을 불러오는데 실패했습니다.', type: 'error' });
         } finally {
             setIsLoading(false);
         }
@@ -127,70 +86,45 @@ export default function SettingsPage() {
     const handleSave = async () => {
         try {
             setIsSaving(true);
-            setError(null);
-            setSuccessMessage(null);
-
-            const updatedSettings: Partial<UserSettings> = {
-                topic,
-                keywords,
-                platforms,
-                collectionLimit,
-                sortBy,
-                autoAnalyze,
-                tools,
-                genres,
-                styles,
-                timePeriod,
-            };
+            setMessage(null);
 
             const response = await fetch('/api/settings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedSettings),
+                body: JSON.stringify(settings),
             });
-
             const data = await response.json();
 
             if (data.success) {
-                setSuccessMessage('Settings saved successfully!');
-                setTimeout(() => setSuccessMessage(null), 3000);
+                setMessage({ text: '오늘의 학습 루틴이 저장되었습니다!', type: 'success' });
+                // Optional: Redirect to dashboard after short delay
+                setTimeout(() => setMessage(null), 3000);
             } else {
-                setError(data.error || 'Failed to save settings');
+                throw new Error(data.error);
             }
         } catch (err) {
-            setError('Failed to save settings');
+            setMessage({ text: '저장 실패. 다시 시도해주세요.', type: 'error' });
         } finally {
             setIsSaving(false);
         }
     };
 
-    const handleAddKeyword = () => {
-        if (keywordInput.trim() && !keywords.includes(keywordInput.trim())) {
-            setKeywords([...keywords, keywordInput.trim()]);
-            setKeywordInput('');
-        }
-    };
-
-    const handleRemoveKeyword = (keyword: string) => {
-        setKeywords(keywords.filter(k => k !== keyword));
-    };
-
-    const togglePlatform = (platform: Platform) => {
-        if (platforms.includes(platform)) {
-            setPlatforms(platforms.filter(p => p !== platform));
+    const toggleArrayItem = (field: 'tools' | 'styles', value: string, max: number) => {
+        const current = settings[field] || [];
+        if (current.includes(value)) {
+            setSettings({ ...settings, [field]: current.filter(item => item !== value) });
         } else {
-            setPlatforms([...platforms, platform]);
+            if (current.length < max) {
+                setSettings({ ...settings, [field]: [...current, value] });
+            }
         }
     };
 
     if (isLoading) {
         return (
             <DashboardLayout>
-                <div className="flex items-center justify-center h-96">
-                    <div className="text-center">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-primary mx-auto mb-4"></div>
-                        <p className="text-dark-text-muted">Loading settings...</p>
-                    </div>
+                <div className="flex justify-center items-center h-screen">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent-primary" />
                 </div>
             </DashboardLayout>
         );
@@ -198,152 +132,96 @@ export default function SettingsPage() {
 
     return (
         <DashboardLayout>
-            <div className="max-w-4xl mx-auto space-y-6">
+            <div className="max-w-2xl mx-auto pb-20 space-y-8">
                 {/* Header */}
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold text-dark-text">Settings</h1>
-                        <p className="text-dark-text-muted mt-1">
-                            Configure your video learning preferences
-                        </p>
-                    </div>
-                    <button
-                        onClick={() => router.push('/')}
-                        className="btn-secondary"
-                    >
-                        ← Back to Dashboard
-                    </button>
+                <div className="text-center space-y-2 pt-8">
+                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
+                        Daily Study Routine
+                    </h1>
+                    <p className="text-dark-text-muted">
+                        오늘의 집중 훈련 목표를 설계하세요
+                    </p>
                 </div>
 
-                {/* Success/Error Messages */}
-                {successMessage && (
-                    <div className="bg-accent-success/10 border border-accent-success text-accent-success px-4 py-3 rounded-lg">
-                        {successMessage}
-                    </div>
-                )}
-                {error && (
-                    <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg">
-                        {error}
+                {/* Message Toast */}
+                {message && (
+                    <div className={`fixed top-24 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full shadow-lg z-50 animate-fade-in ${message.type === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/50' : 'bg-red-500/20 text-red-400 border border-red-500/50'
+                        }`}>
+                        {message.text}
                     </div>
                 )}
 
-                {/* Learning Topic */}
-                <div className="card">
-                    <h2 className="text-xl font-bold text-dark-text mb-4">Learning Topic</h2>
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-dark-text mb-2">
-                                What do you want to learn?
-                            </label>
-                            <input
-                                type="text"
-                                value={topic}
-                                onChange={(e) => setTopic(e.target.value)}
-                                className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
-                                placeholder="e.g., Motion Design, Color Grading"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-dark-text mb-2">
-                                Quick Presets
-                            </label>
-                            <div className="flex flex-wrap gap-2">
-                                {TOPIC_PRESETS.map((preset) => (
-                                    <button
-                                        key={preset}
-                                        onClick={() => setTopic(preset)}
-                                        className={`px-3 py-1 rounded-lg text-sm transition-all ${topic === preset
-                                            ? 'bg-accent-primary text-white'
-                                            : 'bg-dark-surface-light text-dark-text hover:bg-dark-border'
-                                            }`}
-                                    >
-                                        {preset}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-dark-text mb-2">
-                                Additional Keywords
-                            </label>
-                            <div className="flex gap-2 mb-2">
-                                <input
-                                    type="text"
-                                    value={keywordInput}
-                                    onChange={(e) => setKeywordInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleAddKeyword()}
-                                    className="flex-1 bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
-                                    placeholder="Add keyword and press Enter"
-                                />
-                                <button onClick={handleAddKeyword} className="btn-primary">
-                                    Add
-                                </button>
-                            </div>
-                            <div className="flex flex-wrap gap-2">
-                                {keywords.map((keyword) => (
-                                    <span
-                                        key={keyword}
-                                        className="px-3 py-1 bg-dark-surface-light rounded-lg text-sm flex items-center gap-2"
-                                    >
-                                        {keyword}
-                                        <button
-                                            onClick={() => handleRemoveKeyword(keyword)}
-                                            className="text-red-500 hover:text-red-400"
-                                        >
-                                            ×
-                                        </button>
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
+                {/* Stage 1: Study Focus */}
+                <section className="space-y-4 animate-slide-up" style={{ animationDelay: '0.1s' }}>
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-accent-primary/20 flex items-center justify-center text-accent-primary font-bold">1</div>
+                        <h2 className="text-xl font-bold text-white">오늘의 훈련 목표 (Study Focus)</h2>
                     </div>
-                </div>
-
-                {/* Platforms */}
-                <div className="card">
-                    <h2 className="text-xl font-bold text-dark-text mb-4">Video Sources</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {PLATFORM_OPTIONS.map((platform) => (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        {STUDY_FOCUS_OPTIONS.map((option) => (
                             <button
-                                key={platform.value}
-                                onClick={() => togglePlatform(platform.value)}
-                                className={`p-4 rounded-lg border-2 transition-all ${platforms.includes(platform.value)
-                                    ? 'border-accent-primary bg-accent-primary/10'
-                                    : 'border-dark-border bg-dark-surface-light hover:border-dark-text-muted'
+                                key={option.value}
+                                onClick={() => setSettings({ ...settings, studyFocus: option.value })}
+                                className={`text-left p-4 rounded-xl border transition-all duration-200 group relative overflow-hidden ${settings.studyFocus === option.value
+                                        ? 'bg-accent-primary/10 border-accent-primary'
+                                        : 'bg-dark-surface border-dark-border hover:border-gray-600'
                                     }`}
                             >
-                                <div className="text-3xl mb-2">{platform.icon}</div>
-                                <div className="font-medium text-dark-text">{platform.label}</div>
+                                <div className="relative z-10">
+                                    <div className={`font-bold mb-1 ${settings.studyFocus === option.value ? 'text-accent-primary' : 'text-gray-200'}`}>
+                                        {option.label}
+                                    </div>
+                                    <div className="text-xs text-gray-500">{option.desc}</div>
+                                </div>
+                                {settings.studyFocus === option.value && (
+                                    <div className="absolute inset-0 bg-accent-primary/5 pointer-events-none" />
+                                )}
                             </button>
                         ))}
                     </div>
-                </div>
+                </section>
 
-                {/* Advanced Filters */}
-                <div className="card">
-                    <h2 className="text-xl font-bold text-dark-text mb-4">🎯 Advanced Filters</h2>
+                {/* Stage 2: Genre */}
+                <section className="space-y-4 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400 font-bold">2</div>
+                        <h2 className="text-xl font-bold text-white">장르 선택 (Genre)</h2>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {GENRE_OPTIONS.map((option) => (
+                            <button
+                                key={option.value}
+                                onClick={() => setSettings({ ...settings, genre: option.value })}
+                                className={`flex flex-col items-center justify-center p-4 rounded-xl border transition-all duration-200 gap-2 ${settings.genre === option.value
+                                        ? 'bg-purple-500/10 border-purple-500 text-purple-400'
+                                        : 'bg-dark-surface border-dark-border hover:border-gray-600 text-gray-400'
+                                    }`}
+                            >
+                                <span className="text-2xl">{option.icon}</span>
+                                <span className="font-medium text-sm">{option.label}</span>
+                            </button>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Stage 3: Scope */}
+                <section className="space-y-6 animate-slide-up bg-dark-surface/50 p-6 rounded-2xl border border-dark-border" style={{ animationDelay: '0.3s' }}>
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold">3</div>
+                        <h2 className="text-xl font-bold text-white">검색 범위 (Scope)</h2>
+                    </div>
 
                     {/* Tools */}
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-dark-text mb-2">
-                            Creation Tools
-                        </label>
+                    <div>
+                        <label className="text-sm text-gray-400 mb-3 block">Tools (최대 2개)</label>
                         <div className="flex flex-wrap gap-2">
-                            {TOOL_OPTIONS.map((tool) => (
+                            {TOOL_OPTIONS.map(tool => (
                                 <button
                                     key={tool}
-                                    onClick={() => {
-                                        if (tools.includes(tool)) {
-                                            setTools(tools.filter(t => t !== tool));
-                                        } else {
-                                            setTools([...tools, tool]);
-                                        }
-                                    }}
-                                    className={`px-3 py-1 rounded-lg text-sm transition-all ${tools.includes(tool)
-                                            ? 'bg-accent-primary text-white'
-                                            : 'bg-dark-surface-light text-dark-text hover:bg-dark-border'
+                                    onClick={() => toggleArrayItem('tools', tool, 2)}
+                                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors border ${settings.tools?.includes(tool)
+                                            ? 'bg-blue-500/20 border-blue-500 text-blue-400'
+                                            : 'bg-dark-surface border-dark-border text-gray-400 hover:border-gray-600'
                                         }`}
                                 >
                                     {tool}
@@ -352,52 +230,17 @@ export default function SettingsPage() {
                         </div>
                     </div>
 
-                    {/* Genres */}
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-dark-text mb-2">
-                            Genres
-                        </label>
-                        <div className="flex flex-wrap gap-2">
-                            {GENRE_OPTIONS.map((genre) => (
-                                <button
-                                    key={genre}
-                                    onClick={() => {
-                                        if (genres.includes(genre)) {
-                                            setGenres(genres.filter(g => g !== genre));
-                                        } else {
-                                            setGenres([...genres, genre]);
-                                        }
-                                    }}
-                                    className={`px-3 py-1 rounded-lg text-sm transition-all ${genres.includes(genre)
-                                            ? 'bg-accent-primary text-white'
-                                            : 'bg-dark-surface-light text-dark-text hover:bg-dark-border'
-                                        }`}
-                                >
-                                    {genre}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
                     {/* Styles */}
-                    <div className="mb-6">
-                        <label className="block text-sm font-medium text-dark-text mb-2">
-                            Styles
-                        </label>
+                    <div>
+                        <label className="text-sm text-gray-400 mb-3 block">Styles (최대 2개)</label>
                         <div className="flex flex-wrap gap-2">
-                            {STYLE_OPTIONS.map((style) => (
+                            {STYLE_OPTIONS.map(style => (
                                 <button
                                     key={style}
-                                    onClick={() => {
-                                        if (styles.includes(style)) {
-                                            setStyles(styles.filter(s => s !== style));
-                                        } else {
-                                            setStyles([...styles, style]);
-                                        }
-                                    }}
-                                    className={`px-3 py-1 rounded-lg text-sm transition-all ${styles.includes(style)
-                                            ? 'bg-accent-primary text-white'
-                                            : 'bg-dark-surface-light text-dark-text hover:bg-dark-border'
+                                    onClick={() => toggleArrayItem('styles', style, 2)}
+                                    className={`px-3 py-1.5 rounded-lg text-sm transition-colors border ${settings.styles?.includes(style)
+                                            ? 'bg-blue-500/20 border-blue-500 text-blue-400'
+                                            : 'bg-dark-surface border-dark-border text-gray-400 hover:border-gray-600'
                                         }`}
                                 >
                                     {style}
@@ -408,85 +251,92 @@ export default function SettingsPage() {
 
                     {/* Time Period */}
                     <div>
-                        <label className="block text-sm font-medium text-dark-text mb-2">
-                            Time Period
-                        </label>
+                        <label className="text-sm text-gray-400 mb-3 block">Time Range</label>
                         <div className="flex flex-wrap gap-2">
-                            {TIME_PERIOD_OPTIONS.map((option) => (
+                            {TIME_PERIOD_OPTIONS.map(time => (
                                 <button
-                                    key={option.value}
-                                    onClick={() => setTimePeriod(option.value as any)}
-                                    className={`px-4 py-2 rounded-lg text-sm transition-all ${timePeriod === option.value
-                                            ? 'bg-accent-primary text-white'
-                                            : 'bg-dark-surface-light text-dark-text hover:bg-dark-border'
+                                    key={time.value}
+                                    onClick={() => setSettings({ ...settings, timePeriod: time.value as any })}
+                                    className={`px-4 py-2 rounded-lg text-sm transition-colors border ${settings.timePeriod === time.value
+                                            ? 'bg-blue-500/20 border-blue-500 text-blue-400'
+                                            : 'bg-dark-surface border-dark-border text-gray-400 hover:border-gray-600'
                                         }`}
                                 >
-                                    {option.label}
+                                    {time.label}
                                 </button>
                             ))}
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* Collection Settings */}
-                <div className="card">
-                    <h2 className="text-xl font-bold text-dark-text mb-4">Collection Settings</h2>
-                    <div className="space-y-4">
+                {/* Stage 4: Daily Plan */}
+                <section className="space-y-4 animate-slide-up bg-dark-surface p-6 rounded-2xl border border-dark-border" style={{ animationDelay: '0.4s' }}>
+                    <div className="flex items-center gap-3 mb-2">
+                        <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 font-bold">4</div>
+                        <h2 className="text-xl font-bold text-white">하루 수집 전략 (Daily Plan)</h2>
+                    </div>
+
+                    <div className="space-y-6">
+                        {/* Count */}
                         <div>
-                            <label className="block text-sm font-medium text-dark-text mb-2">
-                                Videos per Collection: {collectionLimit}
-                            </label>
+                            <div className="flex justify-between text-sm mb-2">
+                                <span className="text-gray-400">이번 세션 수집량</span>
+                                <span className="text-green-400 font-bold">{settings.collectionLimit}개</span>
+                            </div>
                             <input
                                 type="range"
                                 min="1"
-                                max="20"
-                                value={collectionLimit}
-                                onChange={(e) => setCollectionLimit(parseInt(e.target.value))}
-                                className="w-full"
+                                max="5"
+                                value={settings.collectionLimit}
+                                onChange={(e) => setSettings({ ...settings, collectionLimit: parseInt(e.target.value) })}
+                                className="w-full h-2 bg-dark-bg rounded-lg appearance-none cursor-pointer accent-green-500"
                             />
+                            <p className="text-xs text-gray-500 mt-2 text-right">최대 5개 제한 (깊이 있는 분석을 위해)</p>
                         </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-dark-text mb-2">
-                                Sort By
-                            </label>
-                            <select
-                                value={sortBy}
-                                onChange={(e) => setSortBy(e.target.value as any)}
-                                className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
+                        {/* Options */}
+                        <div className="flex items-center justify-between p-3 bg-dark-bg/50 rounded-lg">
+                            <span className="text-gray-300 text-sm">자동 분석 (AI Analysis)</span>
+                            <div
+                                onClick={() => setSettings({ ...settings, autoAnalyze: !settings.autoAnalyze })}
+                                className={`w-12 h-6 rounded-full p-1 cursor-pointer transition-colors ${settings.autoAnalyze ? 'bg-green-500' : 'bg-gray-700'}`}
                             >
-                                {SORT_OPTIONS.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                                <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${settings.autoAnalyze ? 'translate-x-6' : 'translate-x-0'}`} />
+                            </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <input
-                                type="checkbox"
-                                id="autoAnalyze"
-                                checked={autoAnalyze}
-                                onChange={(e) => setAutoAnalyze(e.target.checked)}
-                                className="w-5 h-5"
-                            />
-                            <label htmlFor="autoAnalyze" className="text-dark-text">
-                                Automatically analyze collected videos
-                            </label>
+                        <div className="space-y-2">
+                            <label className="text-sm text-gray-400">정렬 기준</label>
+                            <div className="grid grid-cols-2 gap-2">
+                                {SORT_OPTIONS.map(sort => (
+                                    <button
+                                        key={sort.value}
+                                        onClick={() => setSettings({ ...settings, sortBy: sort.value as any })}
+                                        className={`py-2 text-sm rounded-lg border transition-all ${settings.sortBy === sort.value
+                                                ? 'bg-green-500/10 border-green-500 text-green-400'
+                                                : 'bg-dark-bg border-dark-border text-gray-400'
+                                            }`}
+                                    >
+                                        {sort.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
 
-                {/* Save Button */}
-                <div className="flex gap-4">
+                {/* Save Action */}
+                <div className="sticky bottom-4 pt-4 animate-slide-up" style={{ animationDelay: '0.5s' }}>
                     <button
                         onClick={handleSave}
-                        disabled={isSaving || platforms.length === 0 || !topic}
-                        className="btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={isSaving}
+                        className="w-full py-4 bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-bold rounded-xl shadow-lg shadow-accent-primary/20 hover:shadow-accent-primary/40 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isSaving ? 'Saving...' : 'Save Settings'}
+                        {isSaving ? '루틴 저장 중...' : '오늘의 루틴 시작하기 ✨'}
                     </button>
+                    <p className="text-center text-xs text-gray-500 mt-3">
+                        설정된 내용은 다음 수집 시 바로 반영됩니다.
+                    </p>
                 </div>
             </div>
         </DashboardLayout>
