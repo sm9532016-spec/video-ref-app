@@ -1,6 +1,9 @@
 import { VideoReference, ApiResponse } from '@/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+// Use relative URL in browser to avoid CORS/mixed content issues and needing config
+// Use absolute URL on server (defaulting to localhost if not set)
+const isClient = typeof window !== 'undefined';
+const API_BASE_URL = process.env.NEXT_PUBLIC_APP_URL || (isClient ? '' : 'http://localhost:3000');
 
 /**
  * API Client for video operations
@@ -10,12 +13,15 @@ export const videoApi = {
      * Get all videos
      */
     async getAll(platform?: string): Promise<VideoReference[]> {
-        const url = new URL(`${API_BASE_URL}/api/videos`);
+        const params = new URLSearchParams();
         if (platform) {
-            url.searchParams.set('platform', platform);
+            params.set('platform', platform);
         }
 
-        const response = await fetch(url.toString());
+        const queryString = params.toString();
+        const url = `${API_BASE_URL}/api/videos${queryString ? `?${queryString}` : ''}`;
+
+        const response = await fetch(url);
         const data: ApiResponse<VideoReference[]> = await response.json();
 
         if (!data.success || !data.data) {
