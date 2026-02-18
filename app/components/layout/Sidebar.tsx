@@ -58,11 +58,12 @@ export default function Sidebar() {
     return (
         <>
             {/* Desktop Sidebar (Hidden on Mobile/Tablet/Laptop) */}
-            <aside className="hidden xl:flex fixed left-0 top-0 h-screen w-64 bg-dark-surface border-r border-dark-border flex-col z-20">
+            {/* Desktop Sidebar (Hidden on Mobile/Tablet/Laptop) */}
+            <aside className="hidden xl:flex fixed left-0 top-0 h-screen w-64 bg-dark-surface border-r border-dark-border flex-col z-20 mobile-hide-sidebar">
                 {/* Logo */}
                 <div className="p-6 border-b border-dark-border">
                     <h1 className="text-2xl font-bold text-gradient">
-                        Video Ref
+                        Video Ref (Mobile Fix)
                     </h1>
                     <p className="text-sm text-dark-text-muted mt-1">
                         크리에이티브 분석

@@ -136,3 +136,9 @@
     }
   }
 }
+
+@media (max-width: 1279px) {
+  .mobile-hide-sidebar {
+    display: none !important;
+  }
+}
