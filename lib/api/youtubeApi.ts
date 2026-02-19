@@ -56,12 +56,16 @@ function calculatePopularityScore(views: number, likes: number): number {
 /**
  * Search YouTube videos by keywords
  */
+/**
+ * Search YouTube videos by keywords
+ */
 export async function searchYouTubeVideos(
     query: string,
     maxResults: number = 10,
     sortBy: 'viewCount' | 'relevance' | 'date' = 'viewCount',
-    publishedAfter?: Date
-): Promise<VideoReference[]> {
+    publishedAfter?: Date,
+    pageToken?: string
+): Promise<{ videos: VideoReference[]; nextPageToken?: string }> {
     if (!YOUTUBE_API_KEY) {
         throw new Error('YouTube API key is not configured');
     }
@@ -79,13 +83,15 @@ export async function searchYouTubeVideos(
                 videoDefinition: 'high',
                 videoDuration: 'short', // Focus on short videos (< 4 minutes)
                 publishedAfter: publishedAfter ? publishedAfter.toISOString() : undefined,
+                pageToken: pageToken,
             },
         });
 
         const videos: YouTubeVideo[] = searchResponse.data.items;
+        const nextPageToken = searchResponse.data.nextPageToken;
 
         if (!videos || videos.length === 0) {
-            return [];
+            return { videos: [] };
         }
 
         // Step 2: Get video details (duration and statistics)
@@ -137,7 +143,12 @@ export async function searchYouTubeVideos(
         });
 
         // Sort by popularity score
-        return videoReferences.sort((a, b) => (b.metrics?.score || 0) - (a.metrics?.score || 0));
+        const sortedVideos = videoReferences.sort((a, b) => (b.metrics?.score || 0) - (a.metrics?.score || 0));
+
+        return {
+            videos: sortedVideos,
+            nextPageToken
+        };
     } catch (error) {
         console.error('Error searching YouTube:', error);
         throw new Error('Failed to search YouTube videos');
@@ -153,5 +164,6 @@ export async function getTrendingVideos(
 ): Promise<VideoReference[]> {
     // For now, use search with specific keywords
     // YouTube's trending API requires different authentication
-    return searchYouTubeVideos(`${category} tutorial`, maxResults, 'viewCount');
+    const result = await searchYouTubeVideos(`${category} tutorial`, maxResults, 'viewCount');
+    return result.videos;
 }

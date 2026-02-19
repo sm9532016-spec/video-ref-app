@@ -27,6 +27,9 @@ function getPublishedAfterDate(period: string): Date | undefined {
 /**
  * Collect videos from all configured platforms
  */
+/**
+ * Collect videos from all configured platforms with Fallback Strategy
+ */
 export async function collectVideos(): Promise<CollectionResult> {
     const settings = await getSettings();
     // Use new fields with fallbacks
@@ -41,37 +44,47 @@ export async function collectVideos(): Promise<CollectionResult> {
         sortBy = 'creative_quality'
     } = settings;
 
-    // 1. Construct Quality-Focused Query
-    // Base: "Motion Graphics" + "Motion Rhythm"
+    // --- Search Strategy Setup ---
+
+    // 1. Base Terms (Always included)
     const baseTerms = [genre, studyFocus];
 
-    // Tools & Styles: "After Effects", "Minimal"
+    // 2. Nuance Terms (Tools & Styles)
     const nuanceTerms = [...(tools || []), ...(styles || [])];
 
-    // Negative Keywords (Crucial for "Finished Work Only")
-    const negativeKeywords = [
-        '-tutorial', '-how to', '-course', '-class', // Education
-        '-making of', '-behind the scenes', '-breakdown', '-process', // Meta
-        '-template', '-free download', '-intro', '-opener' // Assets
+    // 3. Negative Keywords Levels
+    // Level 1: Strict (Default)
+    const negativeKeywordsStrict = [
+        '-tutorial', '-how to', '-course', '-class',
+        '-making of', '-behind the scenes', '-breakdown', '-process',
+        '-template', '-free download', '-intro', '-opener', '-review'
+    ];
+    // Level 2: Essential (Fallback)
+    const negativeKeywordsEssential = [
+        '-tutorial', '-how to', '-course', '-template'
     ];
 
-    // Combine: "Motion Graphics Motion Rhythm After Effects Minimal -tutorial ..."
-    const searchQuery = [
-        ...baseTerms,
-        ...nuanceTerms,
-        ...negativeKeywords
-    ].filter(Boolean).join(' ');
-
-    // 2. Determine Time Range
+    // 4. Time Range
     const publishedAfter = getPublishedAfterDate(timePeriod);
 
-    console.log(`[Collection] Query: "${searchQuery}" | After: ${publishedAfter?.toISOString() ?? 'ALL'}`);
+    // --- Queries Construction ---
+
+    // Query A: Strict (Base + Nuance + Strict Negatives)
+    const queryStrict = [...baseTerms, ...nuanceTerms, ...negativeKeywordsStrict].filter(Boolean).join(' ');
+
+    // Query B: Moderate (Base + Nuance + Essential Negatives)
+    const queryModerate = [...baseTerms, ...nuanceTerms, ...negativeKeywordsEssential].filter(Boolean).join(' ');
+
+    // Query C: Broad (Base + Essential Negatives) - Drops tools/styles if they are too restrictive
+    const queryBroad = [...baseTerms, ...negativeKeywordsEssential].filter(Boolean).join(' ');
 
     const collectedVideos: VideoReference[] = [];
     const platformBreakdown: { platform: Platform; count: number }[] = [];
-
-    // Fetch 'collectionLimit' * 2 to filter and pick best
     const fetchLimit = collectionLimit * 2;
+
+    // Get existing videos first to check for duplicates during collection
+    const existingVideos = await getAllVideos();
+    const existingUrls = new Set(existingVideos.map(v => v.videoUrl));
 
     // Collect from each platform
     for (const platform of platforms) {
@@ -79,44 +92,73 @@ export async function collectVideos(): Promise<CollectionResult> {
             let videos: VideoReference[] = [];
 
             if (platform === 'youtube') {
-                videos = await searchYouTubeVideos(
-                    searchQuery,
-                    fetchLimit,
-                    sortBy === 'creative_quality' ? 'relevance' : 'viewCount', // 'relevance' implies likely to match quality focus
-                    publishedAfter
-                );
+                const searchAttempts = [
+                    { name: 'Strict+Time', query: queryStrict, time: publishedAfter, sortBy: (sortBy === 'creative_quality' ? 'relevance' : 'viewCount') as 'relevance' | 'viewCount' },
+                    { name: 'Strict', query: queryStrict, time: undefined, sortBy: 'relevance' as const },
+                    { name: 'Moderate', query: queryModerate, time: undefined, sortBy: 'relevance' as const },
+                    { name: 'Broad', query: queryBroad, time: undefined, sortBy: 'viewCount' as const }
+                ];
+
+                for (const attempt of searchAttempts) {
+                    if (videos.length > 0) break;
+
+                    if (attempt.name === 'Strict+Time' && !attempt.time) continue;
+                    if (attempt.name === 'Broad' && nuanceTerms.length === 0) continue;
+
+                    console.log(`[Collection] Attempt: ${attempt.name} ("${attempt.query}")`);
+
+                    let pageToken: string | undefined = undefined;
+                    let attemptVideos: VideoReference[] = [];
+                    let newVideosCount = 0;
+                    let pageCount = 0;
+                    const MAX_PAGES = 5;
+
+                    while (newVideosCount < collectionLimit && pageCount < MAX_PAGES) {
+                        try {
+                            const result: { videos: VideoReference[], nextPageToken?: string } = await searchYouTubeVideos(
+                                attempt.query,
+                                fetchLimit,
+                                attempt.sortBy,
+                                attempt.time,
+                                pageToken
+                            );
+
+                            const batchVideos = result.videos;
+                            pageToken = result.nextPageToken;
+                            pageCount++;
+
+                            // Count fresh videos to decide if we need more
+                            const fresh = batchVideos.filter(v => !existingUrls.has(v.videoUrl));
+                            newVideosCount += fresh.length;
+
+                            attemptVideos.push(...batchVideos);
+
+                            if (!pageToken) break;
+                        } catch (e) {
+                            console.error(`Error in pagination loop for ${attempt.name}:`, e);
+                            break;
+                        }
+                    }
+
+                    if (attemptVideos.length > 0) {
+                        videos = attemptVideos;
+                        break;
+                    }
+                }
             } else if (platform === 'behance') {
-                // Behance API update skipped for now, using existing signature
-                videos = await searchBehanceProjects(
-                    searchQuery,
-                    fetchLimit,
-                    'appreciations' // Default to quality metric
-                );
+                videos = await searchBehanceProjects(queryStrict, fetchLimit, 'appreciations');
             } else if (platform === 'vimeo') {
-                videos = await searchVimeoVideos(
-                    searchQuery,
-                    fetchLimit,
-                    'relevant'
-                );
+                videos = await searchVimeoVideos(queryStrict, fetchLimit, 'relevant');
             }
 
             collectedVideos.push(...videos);
-            platformBreakdown.push({
-                platform,
-                count: videos.length,
-            });
+            platformBreakdown.push({ platform, count: videos.length });
+
         } catch (error) {
             console.error(`Error collecting from ${platform}:`, error);
-            platformBreakdown.push({
-                platform,
-                count: 0,
-            });
+            platformBreakdown.push({ platform, count: 0 });
         }
     }
-
-    // Get existing videos to filter out duplicates
-    const existingVideos = await getAllVideos();
-    const existingUrls = new Set(existingVideos.map(v => v.videoUrl));
 
     // Filter out ANY video that has been collected before
     const newVideos = collectedVideos.filter(v => !existingUrls.has(v.videoUrl));
