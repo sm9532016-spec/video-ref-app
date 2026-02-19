@@ -34,3 +34,33 @@ export function parseVideoUrl(url: string): VideoInfo | null {
 
     return null;
 }
+
+/**
+ * Generates an embed URL for the given video URL.
+ * Supports YouTube, Vimeo, and Behance.
+ * @param videoUrl The full video URL
+ * @param autoplay Whether to start playing automatically (default: false)
+ */
+export function getEmbedUrl(videoUrl: string, autoplay: boolean = false): string | null {
+    const info = parseVideoUrl(videoUrl);
+    if (!info) return null;
+
+    const autoplayValue = autoplay ? '1' : '0';
+
+    if (info.platform === 'youtube') {
+        return `https://www.youtube.com/embed/${info.id}?autoplay=${autoplayValue}&rel=0`;
+    }
+
+    if (info.platform === 'vimeo') {
+        return `https://player.vimeo.com/video/${info.id}?title=0&byline=0&portrait=0&autoplay=${autoplayValue}`;
+    }
+
+    if (info.platform === 'other') {
+        if (videoUrl.includes('behance.net')) {
+            // Behance doesn't standardly support autoplay param in embed usually, but we can try
+            return `https://www.behance.net/embed/project/${info.id}?ilo0=1`;
+        }
+    }
+
+    return null;
+}

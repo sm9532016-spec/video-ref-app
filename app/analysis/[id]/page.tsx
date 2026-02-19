@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import DashboardLayout from '@/app/components/layout/DashboardLayout';
 import { VideoReference } from '@/types';
 import { formatDuration, getPlatformInfo } from '@/lib/utils';
+import { getEmbedUrl } from '@/lib/utils/urlParser';
 import AnalysisSection from '@/app/components/analysis/AnalysisSection';
 import DetailedReport from '@/app/components/analysis/DetailedReport';
 import ColorPalette from '@/app/components/analysis/ColorPalette';
@@ -170,42 +171,41 @@ export default function AnalysisDetailPage() {
                         <div className="card sticky top-6">
                             <div className="aspect-video bg-dark-surface-light rounded-lg overflow-hidden relative">
                                 {/* Embedded Video Player */}
-                                {video.platform === 'youtube' ? (
-                                    <iframe
-                                        src={`https://www.youtube.com/embed/${video.videoUrl.split('v=')[1]?.split('&')[0]}?rel=0`}
-                                        title={video.title}
-                                        className="w-full h-full"
-                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                        allowFullScreen
-                                    />
-                                ) : video.platform === 'vimeo' ? (
-                                    <iframe
-                                        src={`https://player.vimeo.com/video/${video.videoUrl.split('/').pop()}?title=0&byline=0&portrait=0`}
-                                        title={video.title}
-                                        className="w-full h-full"
-                                        allow="autoplay; fullscreen; picture-in-picture"
-                                        allowFullScreen
-                                    />
-                                ) : (
-                                    // Fallback for other platforms
-                                    <>
-                                        <img
-                                            src={video.thumbnailUrl}
-                                            alt={video.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                                            <a
-                                                href={video.videoUrl}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="w-16 h-16 bg-accent-primary rounded-full flex items-center justify-center hover:bg-accent-primary/90 transition-all hover:scale-110"
-                                            >
-                                                <span className="text-3xl ml-1">▶️</span>
-                                            </a>
-                                        </div>
-                                    </>
-                                )}
+                                {/* Embedded Video Player */}
+                                {(() => {
+                                    const embedUrl = getEmbedUrl(video.videoUrl);
+                                    if (embedUrl) {
+                                        return (
+                                            <iframe
+                                                src={embedUrl}
+                                                title={video.title}
+                                                className="w-full h-full"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                            />
+                                        );
+                                    }
+                                    return (
+                                        // Fallback for unsupported platforms
+                                        <>
+                                            <img
+                                                src={video.thumbnailUrl}
+                                                alt={video.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                                <a
+                                                    href={video.videoUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="w-16 h-16 bg-accent-primary rounded-full flex items-center justify-center hover:bg-accent-primary/90 transition-all hover:scale-110"
+                                                >
+                                                    <span className="text-3xl ml-1">▶️</span>
+                                                </a>
+                                            </div>
+                                        </>
+                                    );
+                                })()}
                             </div>
                         </div>
 

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { VideoReference } from '@/types';
+import { getEmbedUrl } from '@/lib/utils/urlParser';
 
 interface VideoPlayerModalProps {
     video: VideoReference;
@@ -9,35 +10,8 @@ interface VideoPlayerModalProps {
     onClose: () => void;
 }
 
-/**
- * Extract video ID from URL for embedding
- */
-function getEmbedUrl(video: VideoReference): string | null {
-    const url = video.videoUrl;
-
-    // YouTube
-    if (video.platform === 'youtube') {
-        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-        const match = url.match(youtubeRegex);
-        if (match && match[1]) {
-            return `https://www.youtube.com/embed/${match[1]}?autoplay=1`;
-        }
-    }
-
-    // Vimeo
-    if (video.platform === 'vimeo') {
-        const vimeoRegex = /vimeo\.com\/(\d+)/;
-        const match = url.match(vimeoRegex);
-        if (match && match[1]) {
-            return `https://player.vimeo.com/video/${match[1]}?autoplay=1`;
-        }
-    }
-
-    return null;
-}
-
 export default function VideoPlayerModal({ video, isOpen, onClose }: VideoPlayerModalProps) {
-    const embedUrl = getEmbedUrl(video);
+    const embedUrl = getEmbedUrl(video.videoUrl, true);
 
     // Close on Escape key
     useEffect(() => {
