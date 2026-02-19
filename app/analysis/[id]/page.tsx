@@ -168,11 +168,11 @@ export default function AnalysisDetailPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Left Column: Video Player (1/3 width) - Made sticky */}
                     <div className="lg:col-span-1">
-                        <div className="sticky top-6 space-y-4">
+                        <div className="sticky top-24 space-y-4">
                             <div className="card">
                                 <div className="aspect-video bg-dark-surface-light rounded-lg overflow-hidden relative">
                                     {/* Embedded Video Player */}
-                                    {/* Embedded Video Player */}
+
                                     {(() => {
                                         const embedUrl = getEmbedUrl(video.videoUrl);
                                         if (embedUrl) {

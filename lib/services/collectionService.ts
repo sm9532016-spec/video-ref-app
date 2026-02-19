@@ -78,6 +78,9 @@ export async function collectVideos(): Promise<CollectionResult> {
     // Query C: Broad (Base + Essential Negatives) - Drops tools/styles if they are too restrictive
     const queryBroad = [...baseTerms, ...negativeKeywordsEssential].filter(Boolean).join(' ');
 
+    // Query D: Simple (Base Only) - No negatives, ensuring results if everything else fails
+    const querySimple = baseTerms.filter(Boolean).join(' ');
+
     const collectedVideos: VideoReference[] = [];
     const platformBreakdown: { platform: Platform; count: number }[] = [];
     const fetchLimit = collectionLimit * 2;
@@ -206,7 +209,8 @@ export async function collectVideos(): Promise<CollectionResult> {
                 const searchAttempts = [
                     { name: 'Strict', query: queryStrict },
                     { name: 'Moderate', query: queryModerate },
-                    { name: 'Broad', query: queryBroad }
+                    { name: 'Broad', query: queryBroad },
+                    { name: 'Fallback', query: querySimple }
                 ];
 
                 for (const attempt of searchAttempts) {
