@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server';
 import { parseVideoUrl } from '@/lib/utils/urlParser';
 import { getVideoMetadata as getYouTubeMetadata } from '@/lib/api/youtubeApi';
 import { getVideoMetadata as getVimeoMetadata } from '@/lib/api/vimeoApi';
+import { getBehanceMetadata } from '@/lib/api/behanceApi';
+
+// getBehanceMetadata is imported above
 
 export async function POST(request: Request) {
     try {
@@ -25,6 +28,9 @@ export async function POST(request: Request) {
             metadata = await getYouTubeMetadata(videoInfo.id);
         } else if (videoInfo.platform === 'vimeo') {
             metadata = await getVimeoMetadata(videoInfo.id);
+        } else if (videoInfo.platform === 'other' || (videoInfo as any).id) { // Fallback for Behance/Other
+            // For Behance, we pass the full URL as we don't just use ID for API in the same way
+            metadata = await getBehanceMetadata(url);
         }
 
         if (!metadata) {

@@ -105,3 +105,54 @@ export async function searchBehanceProjects(
         return [];
     }
 }
+
+/**
+ * Get metadata for a Behance project using web scraping (approximated)
+ * Since we don't have a direct project API endoint easily without key context in this file structure,
+ * we'll use a simple placeholder or try to fetch if we had the key. 
+ * ideally we would use axios + cheerio here but let's stick to the pattern.
+ * actually the plan involved axios/cheerio. let's add the imports if missing and implement.
+ */
+import * as cheerio from 'cheerio';
+
+export async function getBehanceMetadata(url: string): Promise<Partial<VideoReference> | null> {
+    try {
+        const response = await axios.get(url, {
+            headers: {
+                // Mock UA to avoid basic blocking
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+        });
+
+        const $ = cheerio.load(response.data);
+
+        // Standard OG tags usually work on Behance
+        const title = $('meta[property="og:title"]').attr('content') || $('title').text() || '';
+        const image = $('meta[property="og:image"]').attr('content') || '';
+        const urlProperty = $('meta[property="og:url"]').attr('content') || url;
+
+        // Try to find brand/owner
+        let brand = $('meta[property="og:site_name"]').attr('content') || 'Behance';
+        const author = $('meta[name="author"]').attr('content'); // Sometimes present
+        // Behance project pages often have an owner link class.
+        // This is brittle but better than nothing.
+        const ownerName = $('.Project-ownerName-eH2').text() || $('.Owner-name-qaO').text() || author;
+
+        if (ownerName) {
+            brand = ownerName;
+        }
+
+        return {
+            title: title.replace(' on Behance', ''),
+            brand: brand,
+            thumbnailUrl: image,
+            duration: 0, // No duration for Behance (usually images/mixed media)
+            platform: 'other',
+            videoUrl: urlProperty
+        };
+
+    } catch (error) {
+        console.error('Error fetching Behance metadata:', error);
+        return null;
+    }
+}

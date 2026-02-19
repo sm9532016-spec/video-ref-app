@@ -4,7 +4,7 @@
  * Supports YouTube and Vimeo.
  */
 export interface VideoInfo {
-    platform: 'youtube' | 'vimeo';
+    platform: 'youtube' | 'vimeo' | 'other';
     id: string;
 }
 
@@ -23,6 +23,13 @@ export function parseVideoUrl(url: string): VideoInfo | null {
     const vimeoMatch = url.match(vimeoRegex);
     if (vimeoMatch && vimeoMatch[1]) {
         return { platform: 'vimeo', id: vimeoMatch[1] };
+    }
+
+    // Behance
+    const behanceRegex = /^(?:https?:\/\/)?(?:www\.)?behance\.net\/(?:gallery|project)\/(\d+)/;
+    const behanceMatch = url.match(behanceRegex);
+    if (behanceMatch && behanceMatch[1]) {
+        return { platform: 'other', id: behanceMatch[1] }; // Using 'other' as generic platform for now
     }
 
     return null;
