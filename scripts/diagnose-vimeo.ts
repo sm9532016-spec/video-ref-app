@@ -13,9 +13,12 @@ if (!VIMEO_ACCESS_TOKEN) {
     process.exit(1);
 }
 
+// Type assertion after check
+const token = VIMEO_ACCESS_TOKEN as string;
+
 async function runDiagnosis() {
     console.log("🔍 Starting Vimeo Diagnosis...");
-    console.log(`🔑 Token: ${VIMEO_ACCESS_TOKEN.substring(0, 5)}...`);
+    console.log(`🔑 Token: ${token.substring(0, 5)}...`);
 
     // Mock Settings (Default)
     const settings = {
@@ -51,7 +54,7 @@ async function runDiagnosis() {
         try {
             const response = await axios.get(`${VIMEO_API_BASE}/videos`, {
                 headers: {
-                    'Authorization': `Bearer ${VIMEO_ACCESS_TOKEN}`,
+                    'Authorization': `Bearer ${token}`,
                     'Accept': 'application/vnd.vimeo.*+json;version=3.4',
                 },
                 params: {
