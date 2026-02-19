@@ -121,3 +121,37 @@ export async function searchVimeoVideos(
         return [];
     }
 }
+
+/**
+ * Get metadata for a single Vimeo video
+ */
+export async function getVideoMetadata(videoId: string): Promise<Partial<VideoReference> | null> {
+    if (!VIMEO_ACCESS_TOKEN) return null;
+
+    try {
+        const response = await axios.get(`${VIMEO_API_BASE}/videos/${videoId}`, {
+            headers: {
+                'Authorization': `Bearer ${VIMEO_ACCESS_TOKEN}`,
+                'Accept': 'application/vnd.vimeo.*+json;version=3.4',
+            },
+            params: {
+                fields: 'name,link,duration,pictures.sizes,user.name',
+            }
+        });
+
+        const video = response.data;
+        const thumbnail = video.pictures?.sizes?.sort((a: any, b: any) => b.width - a.width)[0]?.link || '';
+
+        return {
+            title: video.name,
+            brand: video.user?.name,
+            thumbnailUrl: thumbnail,
+            duration: video.duration,
+            platform: 'vimeo',
+            videoUrl: video.link
+        };
+    } catch (error) {
+        console.error('Error fetching Vimeo metadata:', error);
+        return null;
+    }
+}

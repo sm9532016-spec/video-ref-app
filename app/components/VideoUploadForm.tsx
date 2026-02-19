@@ -21,6 +21,43 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
         duration: 30,
     });
 
+
+    const [isFetchingMetadata, setIsFetchingMetadata] = useState(false);
+
+    const handleUrlBlur = async () => {
+        if (!formData.videoUrl) return;
+
+        // Simple check if it looks like a supported URL before calling API
+        if (!formData.videoUrl.includes('youtube.com') && !formData.videoUrl.includes('youtu.be') && !formData.videoUrl.includes('vimeo.com')) {
+            return;
+        }
+
+        setIsFetchingMetadata(true);
+        try {
+            const response = await fetch('/api/video/metadata', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: formData.videoUrl }),
+            });
+
+            if (response.ok) {
+                const metadata = await response.json();
+                setFormData(prev => ({
+                    ...prev,
+                    title: metadata.title || prev.title,
+                    brand: metadata.brand || prev.brand,
+                    thumbnailUrl: metadata.thumbnailUrl || prev.thumbnailUrl,
+                    duration: metadata.duration || prev.duration,
+                    platform: metadata.platform || prev.platform,
+                }));
+            }
+        } catch (error) {
+            console.error('Failed to fetch metadata:', error);
+        } finally {
+            setIsFetchingMetadata(false);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -39,7 +76,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                 thumbnailUrl: '',
                 brand: '',
                 platform: 'youtube',
-                duration: 30,
+                duration: 0,
             });
 
             setIsOpen(false);
@@ -84,6 +121,31 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-dark-text mb-2">
+                            Video URL *
+                        </label>
+                        <div className="relative">
+                            <input
+                                type="url"
+                                required
+                                value={formData.videoUrl}
+                                onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
+                                onBlur={handleUrlBlur}
+                                className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary pr-10"
+                                placeholder="https://www.youtube.com/watch?v=... (Paste to auto-fill)"
+                            />
+                            {isFetchingMetadata && (
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                    <div className="w-4 h-4 border-2 border-accent-primary border-t-transparent rounded-full animate-spin"></div>
+                                </div>
+                            )}
+                        </div>
+                        <p className="text-xs text-dark-text-muted mt-1">
+                            Paste a YouTube or Vimeo URL to automatically fill details.
+                        </p>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-dark-text mb-2">
                             Title *
                         </label>
                         <input
@@ -92,21 +154,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                             className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
-                            placeholder="Nike - Just Do It Campaign 2024"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-dark-text mb-2">
-                            Video URL *
-                        </label>
-                        <input
-                            type="url"
-                            required
-                            value={formData.videoUrl}
-                            onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                            className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
-                            placeholder="https://www.youtube.com/watch?v=..."
+                            placeholder="Video Title"
                         />
                     </div>
 
@@ -134,7 +182,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                                 value={formData.brand}
                                 onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                                 className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
-                                placeholder="Nike"
+                                placeholder="Channel Name / Brand"
                             />
                         </div>
 
@@ -149,6 +197,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                                 className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
                             >
                                 <option value="youtube">YouTube</option>
+                                <option value="vimeo">Vimeo</option>
                                 <option value="meta">Meta (Facebook/Instagram)</option>
                                 <option value="tiktok">TikTok</option>
                                 <option value="other">Other</option>
@@ -164,7 +213,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                             type="number"
                             min="1"
                             value={formData.duration}
-                            onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) })}
+                            onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 0 })}
                             className="w-full bg-dark-surface-light border border-dark-border rounded-lg px-4 py-2 text-dark-text focus:outline-none focus:border-accent-primary"
                         />
                     </div>

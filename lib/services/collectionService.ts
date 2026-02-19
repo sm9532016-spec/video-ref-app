@@ -179,9 +179,54 @@ export async function collectVideos(): Promise<CollectionResult> {
                     }
                 }
             } else if (platform === 'behance') {
-                videos = await searchBehanceProjects(queryStrict, fetchLimit, 'appreciations');
+                const searchAttempts = [
+                    { name: 'Strict', query: queryStrict },
+                    { name: 'Moderate', query: queryModerate },
+                    { name: 'Broad', query: queryBroad }
+                ];
+
+                for (const attempt of searchAttempts) {
+                    if (videos.length >= collectionLimit) break;
+
+                    console.log(`[Collection] Behance Attempt: ${attempt.name} ("${attempt.query}")`);
+                    try {
+                        const attemptVideos = await searchBehanceProjects(attempt.query, fetchLimit, 'appreciations');
+
+                        const uniqueAttemptVideos = attemptVideos.filter(v =>
+                            !existingUrls.has(v.videoUrl) &&
+                            !videos.some(existing => existing.videoUrl === v.videoUrl)
+                        );
+
+                        videos.push(...uniqueAttemptVideos);
+                    } catch (e) {
+                        console.error(`Error in Behance attempt ${attempt.name}:`, e);
+                    }
+                }
             } else if (platform === 'vimeo') {
-                videos = await searchVimeoVideos(queryStrict, fetchLimit, 'relevant');
+                const searchAttempts = [
+                    { name: 'Strict', query: queryStrict },
+                    { name: 'Moderate', query: queryModerate },
+                    { name: 'Broad', query: queryBroad }
+                ];
+
+                for (const attempt of searchAttempts) {
+                    if (videos.length >= collectionLimit) break;
+
+                    console.log(`[Collection] Vimeo Attempt: ${attempt.name} ("${attempt.query}")`);
+                    try {
+                        const attemptVideos = await searchVimeoVideos(attempt.query, fetchLimit, 'relevant');
+
+                        // Accumulate unique videos
+                        const uniqueAttemptVideos = attemptVideos.filter(v =>
+                            !existingUrls.has(v.videoUrl) &&
+                            !videos.some(existing => existing.videoUrl === v.videoUrl)
+                        );
+
+                        videos.push(...uniqueAttemptVideos);
+                    } catch (e) {
+                        console.error(`Error in Vimeo attempt ${attempt.name}:`, e);
+                    }
+                }
             }
 
             collectedVideos.push(...videos);

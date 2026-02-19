@@ -168,3 +168,38 @@ export async function getTrendingVideos(
     const result = await searchYouTubeVideos(`${category} tutorial`, maxResults, 'viewCount');
     return result.videos;
 }
+
+/**
+ * Get metadata for a single YouTube video
+ */
+export async function getVideoMetadata(videoId: string): Promise<Partial<VideoReference> | null> {
+    if (!YOUTUBE_API_KEY) return null;
+
+    try {
+        const response = await axios.get(`${YOUTUBE_API_BASE}/videos`, {
+            params: {
+                key: YOUTUBE_API_KEY,
+                id: videoId,
+                part: 'snippet,contentDetails,statistics',
+            },
+        });
+
+        const items = response.data.items;
+        if (!items || items.length === 0) return null;
+
+        const video = items[0];
+        const duration = parseDuration(video.contentDetails?.duration || 'PT0S');
+
+        return {
+            title: video.snippet.title,
+            brand: video.snippet.channelTitle,
+            thumbnailUrl: video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url,
+            duration: duration,
+            platform: 'youtube',
+            videoUrl: `https://www.youtube.com/watch?v=${videoId}`
+        };
+    } catch (error) {
+        console.error('Error fetching YouTube metadata:', error);
+        return null;
+    }
+}
