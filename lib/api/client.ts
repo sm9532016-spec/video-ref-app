@@ -53,7 +53,7 @@ export const videoApi = {
         videoUrl: string;
         thumbnailUrl?: string;
         brand: string;
-        platform: 'meta' | 'tiktok' | 'youtube' | 'other';
+        platform: 'meta' | 'tiktok' | 'youtube' | 'other' | 'vimeo';
         duration?: number;
     }): Promise<VideoReference> {
         const response = await fetch(`${API_BASE_URL}/api/videos`, {
