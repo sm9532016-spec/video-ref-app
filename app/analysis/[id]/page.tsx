@@ -167,54 +167,56 @@ export default function AnalysisDetailPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Left Column: Video Player (1/3 width) - Made sticky */}
-                    <div className="lg:col-span-1 space-y-4">
-                        <div className="card sticky top-6">
-                            <div className="aspect-video bg-dark-surface-light rounded-lg overflow-hidden relative">
-                                {/* Embedded Video Player */}
-                                {/* Embedded Video Player */}
-                                {(() => {
-                                    const embedUrl = getEmbedUrl(video.videoUrl);
-                                    if (embedUrl) {
+                    <div className="lg:col-span-1">
+                        <div className="sticky top-6 space-y-4">
+                            <div className="card">
+                                <div className="aspect-video bg-dark-surface-light rounded-lg overflow-hidden relative">
+                                    {/* Embedded Video Player */}
+                                    {/* Embedded Video Player */}
+                                    {(() => {
+                                        const embedUrl = getEmbedUrl(video.videoUrl);
+                                        if (embedUrl) {
+                                            return (
+                                                <iframe
+                                                    src={embedUrl}
+                                                    title={video.title}
+                                                    className="w-full h-full"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                />
+                                            );
+                                        }
                                         return (
-                                            <iframe
-                                                src={embedUrl}
-                                                title={video.title}
-                                                className="w-full h-full"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                allowFullScreen
-                                            />
+                                            // Fallback for unsupported platforms
+                                            <>
+                                                <img
+                                                    src={video.thumbnailUrl}
+                                                    alt={video.title}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                                                    <a
+                                                        href={video.videoUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="w-16 h-16 bg-accent-primary rounded-full flex items-center justify-center hover:bg-accent-primary/90 transition-all hover:scale-110"
+                                                    >
+                                                        <span className="text-3xl ml-1">▶️</span>
+                                                    </a>
+                                                </div>
+                                            </>
                                         );
-                                    }
-                                    return (
-                                        // Fallback for unsupported platforms
-                                        <>
-                                            <img
-                                                src={video.thumbnailUrl}
-                                                alt={video.title}
-                                                className="w-full h-full object-cover"
-                                            />
-                                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                                                <a
-                                                    href={video.videoUrl}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="w-16 h-16 bg-accent-primary rounded-full flex items-center justify-center hover:bg-accent-primary/90 transition-all hover:scale-110"
-                                                >
-                                                    <span className="text-3xl ml-1">▶️</span>
-                                                </a>
-                                            </div>
-                                        </>
-                                    );
-                                })()}
+                                    })()}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Overall Score Card - Kept as it is valid */}
-                        <div className="card text-center p-6">
-                            <h3 className="text-lg font-bold text-dark-text-muted mb-2">종합 제작 완성도</h3>
-                            <div className="text-5xl font-bold text-gradient mb-2">
-                                {video.analysis.overallScore}
-                                <span className="text-2xl text-dark-text-muted">/10</span>
+                            {/* Overall Score Card - Kept as it is valid */}
+                            <div className="card text-center p-6">
+                                <h3 className="text-lg font-bold text-dark-text-muted mb-2">종합 제작 완성도</h3>
+                                <div className="text-5xl font-bold text-gradient mb-2">
+                                    {video.analysis.overallScore}
+                                    <span className="text-2xl text-dark-text-muted">/10</span>
+                                </div>
                             </div>
                         </div>
                     </div>
