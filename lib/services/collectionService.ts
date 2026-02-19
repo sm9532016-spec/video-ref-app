@@ -93,10 +93,12 @@ export async function collectVideos(): Promise<CollectionResult> {
 
             if (platform === 'youtube') {
                 const searchAttempts = [
-                    { name: 'Strict+Time', query: queryStrict, time: publishedAfter, sortBy: (sortBy === 'creative_quality' ? 'relevance' : 'viewCount') as 'relevance' | 'viewCount' },
-                    { name: 'Strict', query: queryStrict, time: undefined, sortBy: 'relevance' as const },
-                    { name: 'Moderate', query: queryModerate, time: undefined, sortBy: 'relevance' as const },
-                    { name: 'Broad', query: queryBroad, time: undefined, sortBy: 'viewCount' as const }
+                    { name: 'Strict+Time', query: queryStrict, time: publishedAfter, sortBy: (sortBy === 'creative_quality' ? 'relevance' : 'viewCount') as 'relevance' | 'viewCount', duration: 'short' },
+                    { name: 'Strict', query: queryStrict, time: undefined, sortBy: 'relevance' as const, duration: 'short' },
+                    { name: 'Strict+Any', query: queryStrict, time: undefined, sortBy: 'relevance' as const, duration: 'any' },
+                    { name: 'Moderate', query: queryModerate, time: undefined, sortBy: 'relevance' as const, duration: 'short' },
+                    { name: 'Moderate+Any', query: queryModerate, time: undefined, sortBy: 'relevance' as const, duration: 'any' },
+                    { name: 'Broad', query: queryBroad, time: undefined, sortBy: 'viewCount' as const, duration: 'short' }
                 ];
 
                 for (const attempt of searchAttempts) {
@@ -120,7 +122,8 @@ export async function collectVideos(): Promise<CollectionResult> {
                                 fetchLimit,
                                 attempt.sortBy,
                                 attempt.time,
-                                pageToken
+                                pageToken,
+                                (attempt.duration as 'short' | 'medium' | 'long' | 'any') || 'short'
                             );
 
                             const batchVideos = result.videos;
@@ -140,9 +143,39 @@ export async function collectVideos(): Promise<CollectionResult> {
                         }
                     }
 
-                    if (attemptVideos.length > 0) {
-                        videos = attemptVideos;
+                    // Accumulate videos from this attempt
+                    videos.push(...attemptVideos);
+
+                    // Check if we have enough fresh videos to stop searching
+                    const uniqueVideos = Array.from(new Set(videos.map(v => v.videoUrl)))
+                        .map(url => videos.find(v => v.videoUrl === url)!);
+
+                    const currentFreshCount = uniqueVideos.filter(v => !existingUrls.has(v.videoUrl)).length;
+
+                    if (currentFreshCount >= collectionLimit) {
                         break;
+                    }
+
+                    // If we didn't find enough new videos, but we found *some*, we should probably keep them
+                    // and try the next attempt to fill the gap.
+                    // However, for simplicity and to respect the "Try Strict first" logic:
+                    // If Strict found SOME new videos but not enough, we might want to keep them.
+                    // But currently `videos` is overwritten.
+                    // Let's accumulate `videos` across attempts?
+                    // Actually, the simplest fix for "0 videos" is to NOT break if we haven't found enough new ones.
+
+                    // But wait, if we break here, we STOP trying other attempts.
+                    // If we found 0 new videos (but 10 duplicates), we certainly shouldn't break.
+                    // If we found 2 new videos (and needed 3), we should probably continue to the next attempt to find 1 more.
+
+                    // Current logic: `videos` is replaced by `attemptVideos`. 
+                    // Better logic: Accumulate unique new videos.
+
+                    if (newVideosCount > 0) {
+                        // We found some! 
+                        // But if it's less than limit, maybe we should continue?
+                        // For now, let's just fix the "0 videos" bug by only breaking if we found AT LEAST ONE new video (or the limit).
+                        // Actually, if we found 0 new videos, DO NOT BREAK.
                     }
                 }
             } else if (platform === 'behance') {

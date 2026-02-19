@@ -64,7 +64,8 @@ export async function searchYouTubeVideos(
     maxResults: number = 10,
     sortBy: 'viewCount' | 'relevance' | 'date' = 'viewCount',
     publishedAfter?: Date,
-    pageToken?: string
+    pageToken?: string,
+    videoDuration: 'short' | 'medium' | 'long' | 'any' = 'short'
 ): Promise<{ videos: VideoReference[]; nextPageToken?: string }> {
     if (!YOUTUBE_API_KEY) {
         throw new Error('YouTube API key is not configured');
@@ -81,7 +82,7 @@ export async function searchYouTubeVideos(
                 maxResults,
                 order: sortBy,
                 videoDefinition: 'high',
-                videoDuration: 'short', // Focus on short videos (< 4 minutes)
+                videoDuration: videoDuration === 'any' ? undefined : videoDuration,
                 publishedAfter: publishedAfter ? publishedAfter.toISOString() : undefined,
                 pageToken: pageToken,
             },
