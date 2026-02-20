@@ -50,6 +50,8 @@ Video Info:
 - Platform: ${video.platform}
 - Duration: ${video.duration}s
 - URL: ${video.videoUrl}
+- Description/Context:
+${video.description || 'No description available.'}
 
 ---
 

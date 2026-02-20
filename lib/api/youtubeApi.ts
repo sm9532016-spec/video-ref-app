@@ -131,6 +131,7 @@ export async function searchYouTubeVideos(
             return {
                 id: `yt-${video.id.videoId}-${Date.now()}`,
                 title: video.snippet.title,
+                description: video.snippet.description,
                 thumbnailUrl: video.snippet.thumbnails.high.url,
                 videoUrl: `https://www.youtube.com/watch?v=${video.id.videoId}`,
                 brand: video.snippet.channelTitle,
@@ -193,6 +194,7 @@ export async function getVideoMetadata(videoId: string): Promise<Partial<VideoRe
         return {
             title: video.snippet.title,
             brand: video.snippet.channelTitle,
+            description: video.snippet.description,
             thumbnailUrl: video.snippet.thumbnails?.high?.url || video.snippet.thumbnails?.medium?.url,
             duration: duration,
             platform: 'youtube',

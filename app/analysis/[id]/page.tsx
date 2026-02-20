@@ -174,7 +174,7 @@ export default function AnalysisDetailPage() {
                                     {/* Embedded Video Player */}
 
                                     {(() => {
-                                        const embedUrl = getEmbedUrl(video.videoUrl);
+                                        const embedUrl = video.embedUrl || getEmbedUrl(video.videoUrl);
                                         if (embedUrl) {
                                             return (
                                                 <iframe

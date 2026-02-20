@@ -1,4 +1,4 @@
-import { VideoReference, ApiResponse } from '@/types';
+import { VideoReference, ApiResponse, Platform } from '@/types';
 
 // Use relative URL in browser to avoid CORS/mixed content issues and needing config
 // Use absolute URL on server (defaulting to localhost if not set)
@@ -53,8 +53,10 @@ export const videoApi = {
         videoUrl: string;
         thumbnailUrl?: string;
         brand: string;
-        platform: 'meta' | 'tiktok' | 'youtube' | 'other' | 'vimeo';
+        platform: Platform;
         duration?: number;
+        embedUrl?: string;
+        description?: string;
     }): Promise<VideoReference> {
         const response = await fetch(`${API_BASE_URL}/api/videos`, {
             method: 'POST',

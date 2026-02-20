@@ -133,22 +133,102 @@ export async function getBehanceMetadata(url: string): Promise<Partial<VideoRefe
 
         // Try to find brand/owner
         let brand = $('meta[property="og:site_name"]').attr('content') || 'Behance';
-        const author = $('meta[name="author"]').attr('content'); // Sometimes present
-        // Behance project pages often have an owner link class.
-        // This is brittle but better than nothing.
+        const author = $('meta[name="author"]').attr('content');
         const ownerName = $('.Project-ownerName-eH2').text() || $('.Owner-name-qaO').text() || author;
 
         if (ownerName) {
             brand = ownerName;
         }
 
+        // --- Video Extraction Logic ---
+        let embedUrl: string | undefined;
+
+        // 1. Look for iframes (YouTube/Vimeo)
+        $('iframe').each((i, el) => {
+            const src = $(el).attr('src');
+            if (src && (src.includes('youtube.com') || src.includes('youtu.be') || src.includes('vimeo.com'))) {
+                // Determine if this is the "main" video. 
+                // Behance projects might have multiple. We'll take the first one for now.
+                if (!embedUrl) {
+                    embedUrl = src;
+                }
+            }
+        });
+
+        // 2. Look for video tags (direct mp4)
+        if (!embedUrl) {
+            $('video').each((i, el) => {
+                const src = $(el).attr('src');
+                if (src && !embedUrl) {
+                    embedUrl = src;
+                }
+                // Check sources if src attr is missing
+                if (!embedUrl) {
+                    $(el).find('source').each((j, source) => {
+                        const sourceSrc = $(source).attr('src');
+                        if (sourceSrc && !embedUrl) {
+                            embedUrl = sourceSrc;
+                        }
+                    });
+                }
+            });
+        }
+
+        // 3. Look for Behance's own lazy-loaded module structure if needed (advanced)
+        // (Skipped for now as iframe/video tag covers most cases)
+
+
+
+        // 4. Extract Description / Text Content from embedded Redux state
+        let description = '';
+        const stateJson = $('#beconfig-store_state').html();
+        if (stateJson) {
+            try {
+                const state = JSON.parse(stateJson);
+                const project = state.project?.project;
+                if (project) {
+                    // Start with the main description if available
+                    if (project.description) {
+                        description += project.description + '\n\n';
+                    }
+                    // Append text from all text modules
+                    const modules = project.modules || [];
+                    modules.forEach((mod: any) => {
+                        if (mod.type === 'text') {
+                            const rawText = mod.text_plain || mod.text || '';
+                            // Strip HTML tags if any remain
+                            description += rawText.replace(/<[^>]*>?/gm, '') + '\n\n';
+                        }
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing Behance state JSON for description:', e);
+            }
+        }
+
+        // Fallback: grab all p tags if specific classes fail and no state found
+        if (!description) {
+            $('div.TEXT, .text-paragraph, .rich-text, p').each((i, el) => {
+                const text = $(el).text().trim();
+                const lowerText = text.toLowerCase();
+                // Filter out short UI labels and common footer texts
+                if (text.length > 20 &&
+                    !lowerText.includes('do not sell or share my personal information') &&
+                    !lowerText.includes('sell freelance services')) {
+                    description += text + '\n\n';
+                }
+            });
+        }
+
         return {
             title: title.replace(' on Behance', ''),
             brand: brand,
             thumbnailUrl: image,
-            duration: 0, // No duration for Behance (usually images/mixed media)
-            platform: 'other',
-            videoUrl: urlProperty
+            duration: 0,
+            platform: 'behance',
+            videoUrl: urlProperty,
+            embedUrl: embedUrl,
+            description: description.trim().substring(0, 5000) // Limit length
         };
 
     } catch (error) {

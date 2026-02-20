@@ -4,7 +4,7 @@
  * Supports YouTube and Vimeo.
  */
 export interface VideoInfo {
-    platform: 'youtube' | 'vimeo' | 'other';
+    platform: 'youtube' | 'vimeo' | 'behance' | 'other';
     id: string;
 }
 
@@ -29,7 +29,7 @@ export function parseVideoUrl(url: string): VideoInfo | null {
     const behanceRegex = /^(?:https?:\/\/)?(?:www\.)?behance\.net\/(?:gallery|project)\/(\d+)/;
     const behanceMatch = url.match(behanceRegex);
     if (behanceMatch && behanceMatch[1]) {
-        return { platform: 'other', id: behanceMatch[1] }; // Using 'other' as generic platform for now
+        return { platform: 'behance', id: behanceMatch[1] };
     }
 
     return null;
@@ -55,12 +55,18 @@ export function getEmbedUrl(videoUrl: string, autoplay: boolean = false): string
         return `https://player.vimeo.com/video/${info.id}?title=0&byline=0&portrait=0&autoplay=${autoplayValue}`;
     }
 
+    if (info.platform === 'behance') {
+        return `https://www.behance.net/embed/project/${info.id}?ilo0=1`;
+    }
+
     if (info.platform === 'other') {
         if (videoUrl.includes('behance.net')) {
-            // Behance doesn't standardly support autoplay param in embed usually, but we can try
+            // Fallback if parser missed it but URL looks like Behance
             return `https://www.behance.net/embed/project/${info.id}?ilo0=1`;
         }
     }
 
+    // Overload to accept VideoReference if we want, but for now keeping it string-based.
+    // Actually, let's keep it simple. Components handle the priority.
     return null;
 }

@@ -80,6 +80,7 @@ const VideoAnalysisSchema = new Schema<VideoAnalysis>({
 const VideoSchema = new Schema<VideoReference>({
     id: { type: String, required: true, unique: true },
     title: { type: String, required: true },
+    description: String,
     // channelName removed to match interface
     videoUrl: { type: String, required: true, unique: true },
     thumbnailUrl: String,

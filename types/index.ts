@@ -7,6 +7,8 @@ export interface VideoReference {
     title: string;
     thumbnailUrl: string;
     videoUrl: string;
+    embedUrl?: string; // Direct embed URL (e.g., specific Vimeo/YouTube frame)
+    description?: string; // Video description or project text
     brand: string;
     platform: Platform;
     duration: number; // in seconds

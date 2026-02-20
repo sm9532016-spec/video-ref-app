@@ -18,8 +18,10 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
         videoUrl: '',
         thumbnailUrl: '',
         brand: '',
-        platform: 'youtube' as 'meta' | 'tiktok' | 'youtube' | 'other' | 'vimeo',
+        platform: 'youtube' as 'meta' | 'tiktok' | 'youtube' | 'other' | 'vimeo' | 'behance',
         duration: 0,
+        embedUrl: '',
+        description: '',
     });
 
     const [isFetchingMetadata, setIsFetchingMetadata] = useState(false);
@@ -35,6 +37,8 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
             brand: '',
             platform: 'youtube',
             duration: 0,
+            embedUrl: '',
+            description: '',
         });
         setError(null);
     };
@@ -69,6 +73,8 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                 thumbnailUrl: metadata.thumbnailUrl || '',
                 duration: metadata.duration || 0,
                 platform: metadata.platform || 'youtube',
+                embedUrl: metadata.embedUrl || '',
+                description: metadata.description || '',
             };
 
             // Update form data in case we need to fallback to manual edit later (if create fails)
@@ -78,6 +84,8 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
             await videoApi.create({
                 ...newVideoData,
                 thumbnailUrl: newVideoData.thumbnailUrl || undefined,
+                embedUrl: newVideoData.embedUrl || undefined,
+                description: newVideoData.description || undefined,
             });
 
             // Success!
@@ -103,6 +111,8 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
             await videoApi.create({
                 ...formData,
                 thumbnailUrl: formData.thumbnailUrl || undefined,
+                embedUrl: formData.embedUrl || undefined,
+                description: formData.description || undefined,
             });
             handleClose();
             onSuccess?.();
@@ -230,6 +240,7 @@ export default function VideoUploadForm({ onSuccess }: VideoUploadFormProps) {
                                     >
                                         <option value="youtube">YouTube</option>
                                         <option value="vimeo">Vimeo</option>
+                                        <option value="behance">Behance</option>
                                         <option value="meta">Meta (Facebook/Instagram)</option>
                                         <option value="tiktok">TikTok</option>
                                         <option value="other">Other</option>

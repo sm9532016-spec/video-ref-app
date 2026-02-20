@@ -7,6 +7,7 @@ const VIMEO_API_BASE = 'https://api.vimeo.com';
 interface VimeoVideo {
     uri: string;
     name: string;
+    description: string;
     link: string;
     duration: number;
     pictures: {
@@ -68,7 +69,7 @@ export async function searchVimeoVideos(
                 sort: sortBy === 'plays' ? 'plays' : sortBy === 'date' ? 'date' : sortBy === 'likes' ? 'likes' : 'relevant',
                 filter: 'embeddable',
                 filter_embeddable: true,
-                fields: 'uri,name,link,duration,pictures.sizes,user.name,stats.plays,metadata.connections.likes,metadata.connections.comments,created_time',
+                fields: 'uri,name,description,link,duration,pictures.sizes,user.name,stats.plays,metadata.connections.likes,metadata.connections.comments,created_time',
             },
         });
 
@@ -105,6 +106,7 @@ export async function searchVimeoVideos(
                 title: video.name,
                 thumbnailUrl: thumbnail,
                 videoUrl: video.link,
+                description: video.description || '',
                 brand: video.user?.name || 'Unknown',
                 platform: 'vimeo',
                 duration: video.duration,
@@ -135,7 +137,7 @@ export async function getVideoMetadata(videoId: string): Promise<Partial<VideoRe
                 'Accept': 'application/vnd.vimeo.*+json;version=3.4',
             },
             params: {
-                fields: 'name,link,duration,pictures.sizes,user.name',
+                fields: 'name,description,link,duration,pictures.sizes,user.name',
             }
         });
 
@@ -146,6 +148,7 @@ export async function getVideoMetadata(videoId: string): Promise<Partial<VideoRe
             title: video.name,
             brand: video.user?.name,
             thumbnailUrl: thumbnail,
+            description: video.description || '',
             duration: video.duration,
             platform: 'vimeo',
             videoUrl: video.link

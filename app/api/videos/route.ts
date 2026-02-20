@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
         }
 
         // Validate platform
-        const validPlatforms = ['meta', 'tiktok', 'youtube', 'other'];
+        const validPlatforms = ['meta', 'tiktok', 'youtube', 'vimeo', 'behance', 'other'];
         if (!validPlatforms.includes(platform)) {
             return NextResponse.json(
                 {
@@ -76,6 +76,8 @@ export async function POST(request: NextRequest) {
             brand,
             platform,
             duration: duration || 30, // Default to 30 seconds if not provided
+            embedUrl: body.embedUrl,
+            description: body.description,
         };
 
         const newVideo = await createVideo(videoData);
@@ -107,6 +109,8 @@ function generatePlaceholderThumbnail(platform: string): string {
         meta: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=450&fit=crop',
         tiktok: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=450&fit=crop',
         youtube: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?w=800&h=450&fit=crop',
+        vimeo: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?w=800&h=450&fit=crop', // Same as YT for now
+        behance: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&h=450&fit=crop',
         other: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=800&h=450&fit=crop',
     };
 

@@ -1,6 +1,6 @@
 import { VideoReference, CollectionResult, Platform } from '@/types';
 import { searchYouTubeVideos } from '../api/youtubeApi';
-import { searchBehanceProjects } from '../api/behanceApi';
+import { searchBehanceProjects, getBehanceMetadata } from '../api/behanceApi';
 import { searchVimeoVideos } from '../api/vimeoApi';
 import { getSettings } from './settingsService';
 import { getAllVideos, createVideo, updateVideo } from './videoService';
@@ -200,7 +200,22 @@ export async function collectVideos(): Promise<CollectionResult> {
                             !videos.some(existing => existing.videoUrl === v.videoUrl)
                         );
 
-                        videos.push(...uniqueAttemptVideos);
+                        // Enrich with metadata (scrape for embedUrl)
+                        const enrichedVideos: VideoReference[] = [];
+                        for (const video of uniqueAttemptVideos) {
+                            const metadata = await getBehanceMetadata(video.videoUrl);
+                            if (metadata && metadata.embedUrl) {
+                                console.log(`[Collection] Found embed for ${video.title}: ${metadata.embedUrl}`);
+                                enrichedVideos.push({
+                                    ...video,
+                                    embedUrl: metadata.embedUrl
+                                });
+                            } else {
+                                enrichedVideos.push(video);
+                            }
+                        }
+
+                        videos.push(...enrichedVideos);
                     } catch (e) {
                         console.error(`Error in Behance attempt ${attempt.name}:`, e);
                     }

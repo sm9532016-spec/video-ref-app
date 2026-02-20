@@ -28,8 +28,8 @@ export async function POST(request: Request) {
             metadata = await getYouTubeMetadata(videoInfo.id);
         } else if (videoInfo.platform === 'vimeo') {
             metadata = await getVimeoMetadata(videoInfo.id);
-        } else if (videoInfo.platform === 'other' || (videoInfo as any).id) { // Fallback for Behance/Other
-            // For Behance, we pass the full URL as we don't just use ID for API in the same way
+        } else if (videoInfo.platform === 'behance' || videoInfo.platform === 'other' || (videoInfo as any).id) {
+            // For Behance/Other, we pass the full URL
             metadata = await getBehanceMetadata(url);
         }
 

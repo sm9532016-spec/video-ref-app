@@ -11,7 +11,7 @@ interface VideoPlayerModalProps {
 }
 
 export default function VideoPlayerModal({ video, isOpen, onClose }: VideoPlayerModalProps) {
-    const embedUrl = getEmbedUrl(video.videoUrl, true);
+    const embedUrl = video.embedUrl || getEmbedUrl(video.videoUrl, true);
 
     // Close on Escape key
     useEffect(() => {
